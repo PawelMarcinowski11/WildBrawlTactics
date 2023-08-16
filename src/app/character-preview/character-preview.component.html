@@ -1,0 +1,34 @@
+<div
+  class="w-full h-full {{
+    available
+      ? 'bg-amber-200 border-amber-400'
+      : 'bg-stone-100 border-stone-300'
+  }} border-b border-r max-lg:border-l lg:border-t "
+>
+  <span class="{{ selectedCharacter ? '' : 'invisible' }}"
+    >HP: {{ selectedCharacter?.hp }} / {{ selectedCharacter?.max_hp }}</span
+  >
+  <div class="flex flex-col xs:flex-row lg:flex-col">
+    <div
+      *ngFor="let action of selectedCharacter?.actions; let last = last"
+      class="w-full border-t h-12 flex flex-col justify-center {{
+        last ? 'lg:border-b' : 'xs:max-lg:border-r'
+      }} {{
+        action === selectedAction
+          ? 'bg-amber-300 hover:bg-amber-100 border-amber-400'
+          : available && !selectedCharacter?.moved
+          ? 'active:bg-amber-300 hover:bg-amber-100 border-amber-400 cursor-pointer'
+          : 'bg-stone-100 border-stone-300'
+      }}"
+      (click)="onActionSelect(action)"
+    >
+      {{ action.name | uppercase }}
+    </div>
+    <div
+      *ngIf="!selectedCharacter"
+      class="w-full border-t lg:border-b h-12 flex flex-col justify-center bg-stone-100 border-stone-300 text-center"
+    >
+      {{ "Select a character to see their available moves" }}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,39 @@
+<div
+  class="flex h-screen justify-center content-center max-lg:flex-col flex-wrap"
+>
+  <div
+    class="w-full xs:w-11/12 md:w-3/4 lg:w-full flex justify-center content-center"
+  >
+    <div
+      class="w-full lg:w-[950px] border-t border-l border-r border-indigo-300 bg-indigo-100 text-center"
+    >
+      {{ "Round " + roundNumber | uppercase }}
+    </div>
+  </div>
+  <div
+    (click)="deselect()"
+    class="w-full xs:w-11/12 md:w-3/4 lg:w-[650px] aspect-square bg-emerald-100 border border-emerald-300 relative"
+  >
+    <ani-character
+      @leave
+      *ngFor="let character of participatingCharacters"
+      [parameters]="character"
+      [style.left]="(+character.x - 1) * 20 + '%'"
+      [style.top]="(+character.y - 1) * 20 + '%'"
+      class="w-1/5 h-1/5 absolute block transition-all"
+    ></ani-character>
+  </div>
+  <div class="w-full xs:w-11/12 md:w-3/4 lg:w-[300px] lg:h-[650px] relative">
+    <ani-character-preview></ani-character-preview>
+  </div>
+</div>
+<div
+  *ngIf="battleResult"
+  class="fixed w-screen h-screen flex items-center justify-center top-0"
+>
+  <div
+    class="w-80 h-40 bg-amber-100 border border-amber-300 flex items-center justify-center"
+  >
+    {{ battleResult | uppercase }}
+  </div>
+</div>
