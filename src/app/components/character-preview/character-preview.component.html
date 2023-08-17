@@ -3,7 +3,7 @@
     available
       ? 'bg-amber-200 border-amber-400'
       : 'bg-stone-100 border-stone-300'
-  }} border-b border-r max-lg:border-l lg:border-t "
+  }} border-b-2 border-r-2 rounded-br-md max-lg:rounded-bl-md max-lg:border-l-2 lg:border-t-2 "
 >
   <span class="{{ selectedCharacter ? '' : 'invisible' }}"
     >HP: {{ selectedCharacter?.hp }} / {{ selectedCharacter?.max_hp }}</span
@@ -26,7 +26,7 @@
     </div>
     <div
       *ngIf="!selectedCharacter"
-      class="w-full border-t lg:border-b h-12 flex flex-col justify-center bg-stone-100 border-stone-300 text-center"
+      class="w-full border-t lg:border-b h-12 flex flex-col justify-center border-stone-300 text-center"
     >
       {{ "Select a character to see their available moves" }}
     </div>

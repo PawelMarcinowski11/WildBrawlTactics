@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
-import { GameStateService } from '../services/game-state.service';
+import { ICharacter } from 'src/app/interfaces/ICharacter';
+import { ICharacterAction } from 'src/app/interfaces/ICharacterAction';
+import { GameStateService } from '../../services/game-state.service';
 
 @Component({
   selector: 'ani-character-preview',
@@ -7,8 +9,8 @@ import { GameStateService } from '../services/game-state.service';
   styles: [],
 })
 export class CharacterPreviewComponent {
-  public selectedCharacter: any;
-  public selectedAction: any;
+  public selectedAction!: ICharacterAction | null;
+  public selectedCharacter!: ICharacter | null;
 
   constructor(private _gameStateService: GameStateService) {
     this._gameStateService.selectedCharacter$.subscribe(
@@ -23,8 +25,11 @@ export class CharacterPreviewComponent {
     return this.selectedCharacter?.player === 'human';
   }
 
-  public onActionSelect(action: any): void {
-    if (!this.selectedCharacter?.moved) {
+  public onActionSelect(action: ICharacterAction): void {
+    if (
+      this.selectedCharacter?.player === 'human' &&
+      !this.selectedCharacter?.moved
+    ) {
       this._gameStateService.onActionSelect(
         this.selectedAction !== action ? action : null
       );

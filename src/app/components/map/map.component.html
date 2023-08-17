@@ -5,14 +5,14 @@
     class="w-full xs:w-11/12 md:w-3/4 lg:w-full flex justify-center content-center"
   >
     <div
-      class="w-full lg:w-[950px] border-t border-l border-r border-indigo-300 bg-indigo-100 text-center"
+      class="w-full lg:w-[950px] border-t-2 border-l-2 border-r-2 border-indigo-300 bg-indigo-100 text-center font-bold rounded-tl-md rounded-tr-md"
     >
       {{ "Round " + roundNumber | uppercase }}
     </div>
   </div>
   <div
     (click)="deselect()"
-    class="w-full xs:w-11/12 md:w-3/4 lg:w-[650px] aspect-square bg-emerald-100 border border-emerald-300 relative"
+    class="w-full xs:w-11/12 md:w-3/4 lg:w-[650px] aspect-square bg-emerald-100 border-2 border-emerald-300 relative lg:rounded-bl-md"
   >
     <ani-character
       @leave
@@ -32,7 +32,7 @@
   class="fixed w-screen h-screen flex items-center justify-center top-0"
 >
   <div
-    class="w-80 h-40 bg-amber-100 border border-amber-300 flex items-center justify-center"
+    class="w-80 h-40 bg-amber-100 border-2 border-amber-300 rounded-md flex items-center justify-center"
   >
     {{ battleResult | uppercase }}
   </div>

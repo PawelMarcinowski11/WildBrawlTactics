@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ICharacter } from '../interfaces/ICharacter';
+import { ICharacterAction } from '../interfaces/ICharacterAction';
 import { sleep } from '../utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameStateService {
-  private _gameState = [
+  private _currentlySelectedAction: ICharacterAction | null = null;
+  private _currentlySelectedCharacter: ICharacter | null = null;
+  private _gameState: ICharacter[] = [
     {
       id: 1,
       hp: 10,
@@ -18,7 +22,7 @@ export class GameStateService {
         {
           name: 'Attack',
           type: 'damage',
-          amount: '3',
+          amount: 3,
           target: 'enemy',
         },
       ],
@@ -36,7 +40,7 @@ export class GameStateService {
         {
           name: 'Attack',
           type: 'damage',
-          amount: '3',
+          amount: 3,
           target: 'enemy',
         },
       ],
@@ -54,7 +58,7 @@ export class GameStateService {
         {
           name: 'Attack',
           type: 'damage',
-          amount: '3',
+          amount: 3,
           target: 'enemy',
         },
       ],
@@ -72,13 +76,15 @@ export class GameStateService {
         {
           name: 'Attack',
           type: 'damage',
-          amount: '3',
+          amount: 3,
           target: 'enemy',
         },
         {
           name: 'Heavy attack',
           type: 'damage',
-          amount: '10',
+          amount: 10,
+          uses: 1,
+          uses_left: 1,
           target: 'enemy',
         },
       ],
@@ -96,13 +102,15 @@ export class GameStateService {
         {
           name: 'Attack',
           type: 'damage',
-          amount: '3',
+          amount: 3,
           target: 'enemy',
         },
         {
           name: 'Heal',
           type: 'heal',
-          amount: '3',
+          amount: 10,
+          uses: 4,
+          uses_left: 4,
           target: 'ally',
         },
       ],
@@ -110,57 +118,67 @@ export class GameStateService {
       player: 'human',
     },
   ];
-  public selectedAction$ = new BehaviorSubject<any>(null);
-  public selectedCharacter$ = new BehaviorSubject<any>(null);
-  public participatingCharacters$ = new BehaviorSubject<any>([
-    ...this.gameState,
-  ]);
+  private _roundNumber = 1;
+
   public gameEvents$ = new BehaviorSubject<any>({
     type: 'roundStart',
     roundNumber: 1,
   });
+  public participatingCharacters$ = new BehaviorSubject<ICharacter[]>([
+    ...this.gameState,
+  ]);
+  public selectedAction$ = new BehaviorSubject<ICharacterAction | null>(null);
+  public selectedCharacter$ = new BehaviorSubject<ICharacter | null>(null);
 
-  private _roundNumber = 1;
-  private _selectedCharacter?: any;
-  private _selectedAction?: any;
-
-  private set currentlySelectedCharacter(character: any) {
-    if (character !== this.currentlySelectedCharacter) {
-      this._selectedCharacter = character;
-      this.selectedAction = null;
-      this.selectedCharacter$.next(character);
-    }
+  public get gameState() {
+    return [...this._gameState];
   }
 
-  private get currentlySelectedCharacter(): any {
-    return this._selectedCharacter;
+  private get currentlySelectedAction(): ICharacterAction | null {
+    return this._currentlySelectedAction;
   }
 
-  private set selectedAction(action: any) {
-    if (action !== this.selectedAction) {
-      this._selectedAction = action;
+  private set currentlySelectedAction(action: ICharacterAction | null) {
+    if (action !== this.currentlySelectedAction) {
+      this._currentlySelectedAction = action;
       this.selectedAction$.next(action);
     }
   }
 
-  private get selectedAction(): any {
-    return this._selectedAction;
+  private get currentlySelectedCharacter(): ICharacter | null {
+    return this._currentlySelectedCharacter;
   }
 
-  public onSelect(selectedCharacter: any): void {
-    if (this.selectedAction) {
+  private set currentlySelectedCharacter(character: ICharacter | null) {
+    if (character !== this.currentlySelectedCharacter) {
+      this._currentlySelectedCharacter = character;
+      this.currentlySelectedAction = null;
+      this.selectedCharacter$.next(character);
+    }
+  }
+
+  public onActionSelect(selectedAction: ICharacterAction | null): void {
+    this.currentlySelectedAction = selectedAction;
+  }
+
+  public onDeselect(): void {
+    this.currentlySelectedCharacter = null;
+  }
+
+  public onSelect(selectedCharacter: ICharacter): void {
+    if (this.currentlySelectedAction && this.currentlySelectedCharacter) {
       if (
-        (this.selectedAction.target === 'enemy' &&
+        (this.currentlySelectedAction.target === 'enemy' &&
           this.currentlySelectedCharacter.team !== selectedCharacter.team) ||
-        (this.selectedAction.target === 'ally' &&
+        (this.currentlySelectedAction.target === 'ally' &&
           this.currentlySelectedCharacter.team === selectedCharacter.team)
       ) {
         this.resolveAction(
           this.currentlySelectedCharacter,
           selectedCharacter,
-          this.selectedAction
+          this.currentlySelectedAction
         );
-        this.selectedAction = null;
+        this.currentlySelectedAction = null;
         this.currentlySelectedCharacter = null;
       }
     } else {
@@ -168,15 +186,52 @@ export class GameStateService {
     }
   }
 
-  public onActionSelect(selected: any): void {
-    this.selectedAction = selected;
+  private chooseTarget(attacker: ICharacter): ICharacter {
+    return this._gameState
+      .filter((character) => character.team !== attacker.team)
+      ?.shuffle()
+      ?.pop();
   }
 
-  public get gameState() {
-    return [...this._gameState];
+  private async handleAiMovement(): Promise<void> {
+    for (let character of this._gameState.filter(
+      (character) => character.player === 'ai' && !character.moved
+    )) {
+      await sleep(300);
+      const target = this.chooseTarget(character);
+
+      if (target) {
+        await this.resolveAction(character, target, character.actions[0]);
+      }
+    }
+
+    this._gameState.forEach((character) => (character.moved = false));
+    this._roundNumber += 1;
+    this.gameEvents$.next({
+      type: 'roundStart',
+      roundNumber: this._roundNumber,
+    });
   }
 
-  private async resolveAction(source: any, target: any, action: any) {
+  private onDefeat(): void {
+    this.gameEvents$.next({
+      type: 'battleFinished',
+      outcome: 'Defeat',
+    });
+  }
+
+  private onVictory(): void {
+    this.gameEvents$.next({
+      type: 'battleFinished',
+      outcome: 'Victory',
+    });
+  }
+
+  private async resolveAction(
+    source: ICharacter,
+    target: ICharacter,
+    action: ICharacterAction
+  ): Promise<void> {
     if (target) {
       const [oldX, oldY] = [source.x, source.y];
       [source.x, source.y] = [target.x, target.y];
@@ -221,46 +276,5 @@ export class GameStateService {
         this.handleAiMovement();
       }
     }
-  }
-
-  private chooseTarget(attacker: any): any {
-    return this._gameState
-      .filter((character) => character.team !== attacker.team)
-      ?.shuffle()
-      ?.pop();
-  }
-
-  private async handleAiMovement() {
-    for (let character of this._gameState.filter(
-      (character) => character.player === 'ai' && !character.moved
-    )) {
-      await sleep(300);
-      const target = this.chooseTarget(character);
-
-      if (target) {
-        await this.resolveAction(character, target, character.actions[0]);
-      }
-    }
-
-    this._gameState.forEach((character) => (character.moved = false));
-    this._roundNumber += 1;
-    this.gameEvents$.next({
-      type: 'roundStart',
-      roundNumber: this._roundNumber,
-    });
-  }
-
-  private onDefeat() {
-    this.gameEvents$.next({
-      type: 'battleFinished',
-      outcome: 'Defeat',
-    });
-  }
-
-  private onVictory() {
-    this.gameEvents$.next({
-      type: 'battleFinished',
-      outcome: 'Victory',
-    });
   }
 }

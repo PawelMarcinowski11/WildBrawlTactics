@@ -3,8 +3,8 @@ import { Component } from '@angular/core';
 @Component({
   selector: 'ani-root',
   templateUrl: './app.component.html',
-  styles: []
+  styles: [],
 })
 export class AppComponent {
-  title = 'AnimalPlanet';
+  public title = 'AnimalPlanet';
 }

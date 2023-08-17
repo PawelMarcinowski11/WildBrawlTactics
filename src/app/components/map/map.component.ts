@@ -1,13 +1,8 @@
-import { ChangeDetectorRef, Component, Renderer2 } from '@angular/core';
-import {
-  animate,
-  state,
-  style,
-  transition,
-  trigger,
-} from '@angular/animations';
-import { GameStateService } from '../services/game-state.service';
+import { animate, style, transition, trigger } from '@angular/animations';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { filter } from 'rxjs';
+import { ICharacter } from 'src/app/interfaces/ICharacter';
+import { GameStateService } from '../../services/game-state.service';
 
 @Component({
   selector: 'ani-map',
@@ -20,19 +15,14 @@ import { filter } from 'rxjs';
   ],
 })
 export class MapComponent {
-  public selectedCharacter: any;
-  public participatingCharacters: any;
-  public roundNumber = 1;
   public battleResult?: 'Victory' | 'Defeat';
+  public participatingCharacters: ICharacter[] = [];
+  public roundNumber = 1;
 
   constructor(
     private _cdr: ChangeDetectorRef,
     private _gameStateService: GameStateService
   ) {
-    this._gameStateService.selectedCharacter$.subscribe((newSelected) => {
-      this.selectedCharacter = newSelected;
-    });
-
     this._gameStateService.participatingCharacters$.subscribe(
       (participatingCharacters) => {
         this.participatingCharacters = participatingCharacters;
@@ -53,6 +43,6 @@ export class MapComponent {
   }
 
   public deselect(): void {
-    this._gameStateService.onSelect(null);
+    this._gameStateService.onDeselect();
   }
 }
