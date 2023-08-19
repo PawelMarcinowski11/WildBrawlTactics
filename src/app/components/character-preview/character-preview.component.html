@@ -3,16 +3,24 @@
     available
       ? 'bg-amber-200 border-amber-400'
       : 'bg-stone-100 border-stone-300'
-  }} border-b-2 border-r-2 rounded-br-md max-lg:rounded-bl-md max-lg:border-l-2 lg:border-t-2 "
+  }} border-b-2 border-r-2 rounded-br-md max-md:rounded-bl-md max-md:border-l-2 md:border-t-2 "
 >
   <span class="{{ selectedCharacter ? '' : 'invisible' }}"
     >HP: {{ selectedCharacter?.hp }} / {{ selectedCharacter?.max_hp }}</span
   >
-  <div class="flex flex-col xs:flex-row lg:flex-col">
+  <div class="flex flex-col xs:flex-row md:flex-col">
     <div
-      *ngFor="let action of selectedCharacter?.actions; let last = last"
-      class="w-full border-t h-12 flex flex-col justify-center {{
-        last ? 'lg:border-b' : 'xs:max-lg:border-r'
+      *ngFor="
+        let action of selectedCharacter?.actions;
+        let last = last;
+        let first = first
+      "
+      class="w-full border-t min-h-[3rem] flex flex-col justify-center {{
+        first ? 'xs:max-md:rounded-bl-md' : ''
+      }} {{
+        last
+          ? 'md:border-b max-xs:rounded-bl-md max-md:rounded-br-md'
+          : 'xs:max-md:border-r'
       }} {{
         action === selectedAction
           ? 'bg-amber-300 hover:bg-amber-100 border-amber-400'
@@ -26,7 +34,7 @@
     </div>
     <div
       *ngIf="!selectedCharacter"
-      class="w-full border-t lg:border-b h-12 flex flex-col justify-center border-stone-300 text-center"
+      class="w-full border-t md:border-b min-h-[3rem] flex flex-col justify-center border-stone-300 text-center"
     >
       {{ "Select a character to see their available moves" }}
     </div>
