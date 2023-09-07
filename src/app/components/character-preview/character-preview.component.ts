@@ -28,7 +28,8 @@ export class CharacterPreviewComponent {
   public onActionSelect(action: ICharacterAction): void {
     if (
       this.selectedCharacter?.player === 'human' &&
-      !this.selectedCharacter?.moved
+      !this.selectedCharacter?.moved &&
+      (!action.uses || action.uses_left)
     ) {
       this._gameStateService.onActionSelect(
         this.selectedAction !== action ? action : null

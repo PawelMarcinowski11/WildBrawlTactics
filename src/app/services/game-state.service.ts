@@ -244,6 +244,10 @@ export class GameStateService {
         target.hp = target.hp + action.amount;
       }
 
+      if (action.uses_left) {
+        action.uses_left -= 1;
+      }
+
       if (target.hp <= 0) {
         this._gameState.splice(this._gameState.indexOf(target), 1);
         this.participatingCharacters$.next(this._gameState);

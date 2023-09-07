@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { MapComponent } from './components/map/map.component';
+import { LayoutComponent } from './components/layout/layout.component';
 
 const routes: Routes = [
   {
     title: 'Animal Planet',
     path: '',
-    component: MapComponent,
+    component: LayoutComponent,
   },
 ];
 
