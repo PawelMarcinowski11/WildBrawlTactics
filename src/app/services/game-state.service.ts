@@ -205,12 +205,14 @@ export class GameStateService {
       }
     }
 
-    this._gameState.forEach((character) => (character.moved = false));
-    this._roundNumber += 1;
-    this.gameEvents$.next({
-      type: 'roundStart',
-      roundNumber: this._roundNumber,
-    });
+    if (this.gameEvents$.getValue()?.type !== 'battleFinished') {
+      this._gameState.forEach((character) => (character.moved = false));
+      this._roundNumber += 1;
+      this.gameEvents$.next({
+        type: 'roundStart',
+        roundNumber: this._roundNumber,
+      });
+    }
   }
 
   private onDefeat(): void {
@@ -248,6 +250,10 @@ export class GameStateService {
         action.uses_left -= 1;
       }
 
+      [source.x, source.y] = [oldX, oldY];
+
+      source.moved = true;
+
       if (target.hp <= 0) {
         this._gameState.splice(this._gameState.indexOf(target), 1);
         this.participatingCharacters$.next(this._gameState);
@@ -257,19 +263,17 @@ export class GameStateService {
             .length === 0
         ) {
           this.onDefeat();
+          return;
         } else if (
           this._gameState.filter((character) => character.player === 'ai')
             .length === 0
         ) {
           this.onVictory();
+          return;
         }
       } else if (target.hp > target.max_hp) {
         target.hp = target.max_hp;
       }
-
-      [source.x, source.y] = [oldX, oldY];
-
-      source.moved = true;
 
       if (
         source.player === 'human' &&
