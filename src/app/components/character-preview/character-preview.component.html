@@ -24,11 +24,11 @@
           : 'xs:max-md:border-r'
       }} {{
         action === selectedAction
-          ? 'bg-amber-300 hover:bg-amber-100 border-amber-400'
+          ? 'bg-amber-300 hoverable:hover:bg-amber-100 border-amber-400'
           : available &&
             !selectedCharacter?.moved &&
             (!action.uses || action.uses_left)
-          ? 'active:bg-amber-300 hover:bg-amber-100 border-amber-400 cursor-pointer'
+          ? 'active:bg-amber-300 hoverable:hover:bg-amber-100 border-amber-400 cursor-pointer'
           : 'bg-stone-100 border-stone-300'
       }}"
       (click)="onActionSelect(action)"
