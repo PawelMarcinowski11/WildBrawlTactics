@@ -6,9 +6,15 @@
       : 'bg-stone-100 border-stone-300'
   }}"
 >
-  <span class="font-bold {{ selectedCharacter ? '' : 'invisible' }}">
+  <div
+    class="font-bold {{ selectedCharacter ? '' : 'invisible' }} {{
+      available
+        ? 'bg-amber-200 border-amber-400'
+        : 'bg-stone-100 border-stone-300'
+    }} sticky top-0"
+  >
     HP: {{ selectedCharacter?.hp }} / {{ selectedCharacter?.max_hp }}
-  </span>
+  </div>
   <div class="flex flex-col xs:flex-row md:flex-col">
     <div
       *ngFor="
