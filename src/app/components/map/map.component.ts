@@ -15,7 +15,7 @@ import { GameStateService } from '../../services/game-state.service';
   ],
 })
 export class MapComponent {
-  public battleResult?: 'Victory' | 'Defeat';
+  public battleResult?: 'Victory!!!!!!' | 'Defeat';
   public participatingCharacters: ICharacter[] = [];
   public roundNumber = 1;
 

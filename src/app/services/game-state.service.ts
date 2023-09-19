@@ -225,7 +225,7 @@ export class GameStateService {
   private onVictory(): void {
     this.gameEvents$.next({
       type: 'battleFinished',
-      outcome: 'Victory',
+      outcome: 'Victory!!!!!!',
     });
   }
 
