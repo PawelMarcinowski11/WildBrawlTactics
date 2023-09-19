@@ -1,17 +1,29 @@
-.sky-colors-anim {
-  animation: 60000ms linear change-sky-color infinite;
+.sky-anim {
+  animation: 60s linear change-sky-color infinite;
   animation-delay: -12500ms;
 }
 
-.forest-colors-anim {
-  animation: 60000ms linear change-forest-color infinite;
-  animation-delay: -12500ms;
+.forest-anim {
+  animation: 60s linear change-forest-color infinite;
+  animation-delay: -12.5s;
 }
 
-.sun-movement {
-  animation: 60000ms linear move-vertically infinite,
-    60000ms linear move-horizontally infinite;
-  animation-delay: -12500ms;
+.sun-anim {
+  animation: 60s linear move-vertically infinite,
+    60s linear move-horizontally infinite;
+  animation-delay: -12.5s;
+}
+
+.fast-cloud-anim {
+  animation: 90s linear translate-horizontally infinite,
+    60s linear change-cloud-color infinite;
+  animation-delay: -12.5s;
+}
+
+.slow-cloud-anim {
+  animation: 105s linear translate-horizontally infinite,
+    60s linear change-cloud-color infinite;
+  animation-delay: -12.5s;
 }
 
 @keyframes move-vertically {
@@ -25,6 +37,16 @@
   }
   100% {
     @apply top-2/3;
+  }
+}
+
+@keyframes translate-horizontally {
+  0% {
+    transform: translateX(-140lvw);
+    animation-timing-function: linear;
+  }
+  100% {
+    transform: translateX(140lvw);
   }
 }
 
@@ -71,5 +93,21 @@
   }
   75% {
     @apply bg-rose-950;
+  }
+}
+
+@keyframes change-cloud-color {
+  0%,
+  100% {
+    @apply bg-blue-300;
+  }
+  10% {
+    @apply bg-yellow-50;
+  }
+  70% {
+    @apply bg-white;
+  }
+  75% {
+    @apply bg-orange-100;
   }
 }
