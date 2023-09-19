@@ -1,19 +1,12 @@
 <div
-  class="w-full h-full border-b-2 border-r-2 rounded-br-md max-md:rounded-bl-md max-md:border-l-2 md:border-t-2 text-gray-900
-  {{
-    available
-      ? 'bg-amber-200 border-amber-400'
-      : 'bg-stone-100 border-stone-300'
-  }}"
+  class="w-full h-full rounded-br-md max-md:rounded-bl-md text-gray-900 bg-green-300"
 >
-  <div
-    class="font-bold {{ selectedCharacter ? '' : 'invisible' }} {{
-      available
-        ? 'bg-amber-200 border-amber-400'
-        : 'bg-stone-100 border-stone-300'
-    }} sticky top-0"
-  >
-    HP: {{ selectedCharacter?.hp }} / {{ selectedCharacter?.max_hp }}
+  <div *ngIf="selectedCharacter" class="font-bold sticky top-0">
+    <div class="p-1">
+      <div class="p-1 rounded-md bg-fuchsia-100">
+        HP: {{ selectedCharacter.hp }} / {{ selectedCharacter.max_hp }}
+      </div>
+    </div>
   </div>
   <div class="flex flex-col xs:flex-row md:flex-col">
     <div
@@ -22,20 +15,17 @@
         let last = last;
         let first = first
       "
-      class="w-full border-t min-h-[3rem] flex flex-col {{
-        first ? 'xs:max-md:rounded-bl-md' : ''
-      }} {{
-        last
-          ? 'md:border-b max-xs:rounded-bl-md max-md:rounded-br-md'
-          : 'xs:max-md:border-r'
-      }} {{
+      class="xs:max-md:w-full min-h-[3rem] flex flex-col m-1 p-1 mt-0 xs:max-md:ml-0 rounded-md
+      {{ first ? 'xs:max-md:rounded-bl-md xs:max-md:ml-1' : '' }}
+      {{ last ? 'max-xs:rounded-bl-md max-md:rounded-br-md' : '' }}
+      {{
         action === selectedAction
-          ? 'bg-amber-300 hoverable:hover:bg-amber-100 border-amber-400'
+          ? 'bg-amber-50 hoverable:hover:bg-amber-50 '
           : available &&
             !selectedCharacter?.moved &&
             (!action.uses || action.uses_left)
-          ? 'active:bg-amber-300 hoverable:hover:bg-amber-100 border-amber-400 cursor-pointer'
-          : 'bg-stone-100 border-stone-300'
+          ? 'bg-amber-100 active:bg-amber-200 hoverable:hover:bg-amber-50 cursor-pointer'
+          : 'bg-fuchsia-100'
       }}"
       (click)="onActionSelect(action)"
     >
@@ -51,9 +41,9 @@
     </div>
     <div
       *ngIf="!selectedCharacter"
-      class="w-full border-t md:border-b min-h-[3rem] flex flex-col justify-center border-stone-300 text-center"
+      class="min-h-[3rem] flex-grow flex flex-col justify-center text-center m-1 p-1 rounded-md bg-fuchsia-100"
     >
-      {{ "Select a character to see their available moves" }}
+      Select a character to see their available moves
     </div>
   </div>
 </div>
