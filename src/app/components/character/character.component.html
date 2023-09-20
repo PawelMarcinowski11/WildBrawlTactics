@@ -8,13 +8,13 @@
     class="h-full w-full absolute p-2 xs:p-4"
   >
     <div
-      class="h-full w-full border-4 xs:border-8 {{
+      class="h-full w-full border-4 {{
         isEnemy()
           ? 'border-red-700'
           : isFriendly()
-          ? 'border-green-700'
+          ? 'border-lime-500'
           : 'border-blue-700'
-      }} rounded-xl"
+      }} rounded-full"
     ></div>
   </div>
   <div class="h-full w-full animate-bounce">
@@ -27,6 +27,7 @@
           'font-family': 'NotoColorEmoji-Regular',
           height: calculatedFontSize * 0.75 + 'px',
           filter: parameters.moved ? 'sepia(1)' : '',
+          'text-shadow': '-1px -1px 0 rgb(17 24 39), 1px -1px 0 rgb(17 24 39), -1px 1px 0 rgb(17 24 39), 1px 1px 0 rgb(17 24 39)',
         }"
         >🦜</span
       >
@@ -43,8 +44,8 @@
           + (1 - this.parameters.hp / this.parameters.max_hp) * 100 + '%, transparent 0%)',
           '-webkit-mask': (this.linearGradient ? 'linear' : 'conic') + '-gradient(white '
           + (1 - this.parameters.hp / this.parameters.max_hp) * 100 + '%, transparent 0%)',
+          'text-shadow': '0 0 0 rgb(185 28 28)',
         }"
-        [style.text-shadow]="'0 0 0 rgb(185 28 28)'"
         >🦜</span
       >
     </div>
