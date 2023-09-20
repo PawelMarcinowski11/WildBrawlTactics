@@ -1,29 +1,29 @@
 .sky-anim {
-  animation: 60s linear change-sky-color infinite;
-  animation-delay: -12500ms;
+  animation: 180s linear change-sky-color infinite;
+  animation-delay: -37.5s;
 }
 
 .forest-anim {
-  animation: 60s linear change-forest-color infinite;
-  animation-delay: -12.5s;
+  animation: 180s linear change-forest-color infinite;
+  animation-delay: -37.5s;
 }
 
 .sun-anim {
-  animation: 60s linear move-vertically infinite,
-    60s linear move-horizontally infinite;
-  animation-delay: -12.5s;
+  animation: 180s linear move-vertically infinite,
+    180s linear move-horizontally infinite;
+  animation-delay: -37.5s;
 }
 
 .fast-cloud-anim {
   animation: 90s linear translate-horizontally infinite,
-    60s linear change-cloud-color infinite;
-  animation-delay: -12.5s;
+    180s linear change-cloud-color infinite;
+  animation-delay: -37.5s;
 }
 
 .slow-cloud-anim {
   animation: 105s linear translate-horizontally infinite,
-    60s linear change-cloud-color infinite;
-  animation-delay: -12.5s;
+    180s linear change-cloud-color infinite;
+  animation-delay: -37.5s;
 }
 
 @keyframes move-vertically {
@@ -42,11 +42,11 @@
 
 @keyframes translate-horizontally {
   0% {
-    transform: translateX(-140lvw);
+    transform: translateX(calc(-100lvw - 240px));
     animation-timing-function: linear;
   }
   100% {
-    transform: translateX(140lvw);
+    transform: translateX(calc(100lvw + 240px));
   }
 }
 
