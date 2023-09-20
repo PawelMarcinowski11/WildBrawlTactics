@@ -5,14 +5,14 @@
     class="w-full max-md:max-w-[65dvh] md:w-full flex justify-center content-center flex-grow relative"
   >
     <div
-      class="w-full md:w-[calc(min(100dvh+300px-26px,100%))] pt-2 pb-2 bg-green-400 text-gray-900 text-center font-bold rounded-tl-md rounded-tr-md max-md:absolute bottom-0"
+      class="p-2 bg-fuchsia-100 text-gray-900 text-center font-bold rounded-md max-md:absolute bottom-0"
     >
       {{ "Round " + roundNumber | uppercase }}
     </div>
   </div>
   <div
     (click)="deselect()"
-    class="w-full max-md:max-w-[65dvh] md:w-[calc(min(100dvh-26px,100vw-302px))] aspect-square bg-green-300 relative md:rounded-bl-md"
+    class="w-full max-md:max-w-[65dvh] md:w-[calc(min(100dvh-40px,100vw-152px))] aspect-square relative md:rounded-bl-md"
   >
     <ani-character
       @leave
@@ -24,7 +24,7 @@
     ></ani-character>
   </div>
   <div
-    class="w-full max-md:max-w-[65dvh] md:w-[300px] md:h-[calc(min(100dvh-26px,100vw-302px))] relative max-md:flex-grow"
+    class="w-full max-md:max-w-[65dvh] md:w-[150px] md:h-[calc(min(100dvh-40px,100vw-152px))] relative max-md:flex-grow"
   >
     <ani-character-preview
       class="absolute w-full md:h-full max-h-full overflow-auto"
