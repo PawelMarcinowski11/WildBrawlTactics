@@ -21,7 +21,7 @@ export class CharacterPreviewComponent {
     );
   }
 
-  public get available(): boolean {
+  public get isPlayerCharacter(): boolean {
     return this.selectedCharacter?.player === 'human';
   }
 

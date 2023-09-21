@@ -6,20 +6,32 @@
       </div>
     </div>
   </div>
-  <div class="flex flex-col xs:flex-row md:flex-col">
+  <div
+    *ngIf="selectedCharacter && !isPlayerCharacter"
+    class="font-bold sticky top-0"
+  >
+    <div class="p-1 pt-0">
+      <div class="p-1 rounded-md bg-red-400 border-2 border-gray-900">
+        This is enemy character
+      </div>
+    </div>
+  </div>
+  <div class="grid grid-cols-2 md:grid-cols-1">
     <div
       *ngFor="
         let action of selectedCharacter?.actions;
         let last = last;
         let first = first
       "
-      class="xs:max-md:w-full min-h-[3rem] flex flex-col m-1 p-1 mt-0 xs:max-md:ml-0 rounded-md border-2 border-gray-900
-      {{ first ? 'xs:max-md:rounded-bl-md xs:max-md:ml-1' : '' }}
-      {{ last ? 'max-xs:rounded-bl-md max-md:rounded-br-md' : '' }}
+      class="min-h-[3rem] flex flex-col m-1 p-1 mt-0 max-md:even:ml-0 rounded-md border-2 border-gray-900
+      {{ first ? 'xs:max-md:rounded-bl-md' : '' }}
+      {{
+        last ? 'max-xs:rounded-bl-md max-md:rounded-br-md odd:col-span-2' : ''
+      }}
       {{
         action === selectedAction
           ? 'bg-amber-50 hoverable:hover:bg-amber-50 '
-          : available &&
+          : isPlayerCharacter &&
             !selectedCharacter?.moved &&
             (!action.uses || action.uses_left)
           ? 'bg-amber-100 active:bg-amber-200 hoverable:hover:bg-amber-50 cursor-pointer'
@@ -37,11 +49,11 @@
         USES: {{ action.uses_left }} / {{ action.uses }}
       </span>
     </div>
-    <div
-      *ngIf="!selectedCharacter"
-      class="min-h-[3rem] flex-grow flex flex-col justify-center text-center m-1 p-1 mt-0 rounded-md bg-fuchsia-100 border-2 border-gray-900"
-    >
-      Select a character to see their available moves
-    </div>
+  </div>
+  <div
+    *ngIf="!selectedCharacter"
+    class="min-h-[3rem] flex-grow flex flex-col justify-center text-center m-1 p-1 mt-0 rounded-md bg-fuchsia-100 border-2 border-gray-900"
+  >
+    Select a character to see their available moves
   </div>
 </div>
