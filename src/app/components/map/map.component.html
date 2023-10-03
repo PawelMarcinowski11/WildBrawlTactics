@@ -1,5 +1,6 @@
 <div
   class="flex h-[calc(99dvh+1lvh)] w-screen justify-center content-center max-md:flex-col flex-wrap"
+  (click)="deselect()"
 >
   <div
     class="w-full max-md:max-w-[65dvh] md:w-full flex justify-center content-center flex-grow relative"
@@ -11,7 +12,6 @@
     </div>
   </div>
   <div
-    (click)="deselect()"
     class="w-full max-md:max-w-[65dvh] md:w-[calc(min(100dvh-48px,100vw-150px))] aspect-square relative md:rounded-bl-md"
   >
     <ani-character

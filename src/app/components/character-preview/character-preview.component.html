@@ -37,7 +37,7 @@
           ? 'bg-amber-100 active:bg-amber-200 hoverable:hover:bg-amber-50 cursor-pointer'
           : 'text-gray-400 bg-fuchsia-100'
       }}"
-      (click)="onActionSelect(action)"
+      (click)="$event.stopPropagation(); onActionSelect(action)"
     >
       <span class="text-center font-bold">
         {{ action.name | uppercase }}
