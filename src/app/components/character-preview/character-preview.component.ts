@@ -14,14 +14,22 @@ export class CharacterPreviewComponent {
 
   constructor(private _gameStateService: GameStateService) {
     this._gameStateService.selectedCharacter$.subscribe(
-      (newCharacter) => (this.selectedCharacter = newCharacter)
+      (newCharacter) => (this.selectedCharacter = newCharacter),
     );
     this._gameStateService.selectedAction$.subscribe(
-      (newAction) => (this.selectedAction = newAction)
+      (newAction) => (this.selectedAction = newAction),
     );
   }
 
-  public get isPlayerCharacter(): boolean {
+  public isActionSelectable(action: ICharacterAction): boolean {
+    return (
+      this.isPlayerCharacter() &&
+      !this.selectedCharacter?.moved &&
+      (!action.uses || !!action.uses_left)
+    );
+  }
+
+  public isPlayerCharacter(): boolean {
     return this.selectedCharacter?.player === 'human';
   }
 
@@ -32,7 +40,7 @@ export class CharacterPreviewComponent {
       (!action.uses || action.uses_left)
     ) {
       this._gameStateService.onActionSelect(
-        this.selectedAction !== action ? action : null
+        this.selectedAction !== action ? action : null,
       );
     }
   }

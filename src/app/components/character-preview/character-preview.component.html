@@ -7,7 +7,7 @@
     </div>
   </div>
   <div
-    *ngIf="selectedCharacter && !isPlayerCharacter"
+    *ngIf="selectedCharacter && !isPlayerCharacter()"
     class="font-bold sticky top-0"
   >
     <div class="p-1 pt-0">
@@ -31,9 +31,7 @@
       {{
         action === selectedAction
           ? 'bg-amber-50 hoverable:hover:bg-amber-50 '
-          : isPlayerCharacter &&
-            !selectedCharacter?.moved &&
-            (!action.uses || action.uses_left)
+          : isActionSelectable(action)
           ? 'bg-amber-100 active:bg-amber-200 hoverable:hover:bg-amber-50 cursor-pointer'
           : 'text-gray-400 bg-fuchsia-100'
       }}"
