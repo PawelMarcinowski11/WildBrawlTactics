@@ -21,12 +21,12 @@ export class MapComponent {
 
   constructor(
     private _cdr: ChangeDetectorRef,
-    private _gameStateService: GameStateService
+    private _gameStateService: GameStateService,
   ) {
     this._gameStateService.participatingCharacters$.subscribe(
       (participatingCharacters) => {
         this.participatingCharacters = participatingCharacters;
-      }
+      },
     );
 
     this._gameStateService.gameEvents$

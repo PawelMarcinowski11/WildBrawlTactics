@@ -28,13 +28,13 @@ export class CharacterComponent {
   constructor(
     private _renderer: Renderer2,
     private _cdr: ChangeDetectorRef,
-    private _gameStateService: GameStateService
+    private _gameStateService: GameStateService,
   ) {
     this._gameStateService.selectedAction$.subscribe(
-      (newSelected) => (this.selectedAction = newSelected)
+      (newSelected) => (this.selectedAction = newSelected),
     );
     this._gameStateService.selectedCharacter$.subscribe(
-      (newSelected) => (this.selectedCharacter = newSelected)
+      (newSelected) => (this.selectedCharacter = newSelected),
     );
   }
 

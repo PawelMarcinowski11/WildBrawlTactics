@@ -3,17 +3,10 @@
   class="w-full aspect-square cursor-pointer select-none transition-all"
   (click)="$event.stopPropagation(); onClick()"
 >
-  <div
-    *ngIf="isEnemy() || isSelected() || isFriendly()"
-    class="h-full w-full absolute p-2 xs:p-4"
-  >
+  <div *ngIf="isEnemy() || isSelected() || isFriendly()" class="h-full w-full absolute p-2 xs:p-4">
     <div
       class="h-full w-full border-4 {{
-        isEnemy()
-          ? 'border-red-700'
-          : isFriendly()
-          ? 'border-lime-500'
-          : 'border-blue-700'
+        isEnemy() ? 'border-red-700' : isFriendly() ? 'border-lime-500' : 'border-blue-700'
       }} rounded-full"
     ></div>
   </div>
@@ -27,10 +20,12 @@
           'font-family': 'NotoColorEmoji-Regular',
           height: calculatedFontSize * 0.75 + 'px',
           filter: parameters.moved ? 'sepia(1)' : '',
-          'text-shadow': '-1px -1px 0 rgb(17 24 39), 1px -1px 0 rgb(17 24 39), -1px 1px 0 rgb(17 24 39), 1px 1px 0 rgb(17 24 39)',
+          'text-shadow':
+            '-1px -1px 0 rgb(17 24 39), 1px -1px 0 rgb(17 24 39), -1px 1px 0 rgb(17 24 39), 1px 1px 0 rgb(17 24 39)'
         }"
-        >🦜</span
+        [innerHTML]="parameters.appearance"
       >
+      </span>
     </div>
     <div #overlay class="h-full w-full absolute text-transparent">
       <span
@@ -40,14 +35,21 @@
           'line-height': calculatedFontSize * 0.75 + 'px',
           'font-family': 'NotoColorEmoji-Regular',
           height: calculatedFontSize * 0.75 + 'px',
-          mask: (this.linearGradient ? 'linear' : 'conic') + '-gradient(white '
-          + (1 - this.parameters.hp / this.parameters.max_hp) * 100 + '%, transparent 0%)',
-          '-webkit-mask': (this.linearGradient ? 'linear' : 'conic') + '-gradient(white '
-          + (1 - this.parameters.hp / this.parameters.max_hp) * 100 + '%, transparent 0%)',
-          'text-shadow': '0 0 0 rgb(185 28 28)',
+          mask:
+            (this.linearGradient ? 'linear' : 'conic') +
+            '-gradient(white ' +
+            (1 - this.parameters.hp / this.parameters.max_hp) * 100 +
+            '%, transparent 0%)',
+          '-webkit-mask':
+            (this.linearGradient ? 'linear' : 'conic') +
+            '-gradient(white ' +
+            (1 - this.parameters.hp / this.parameters.max_hp) * 100 +
+            '%, transparent 0%)',
+          'text-shadow': '0 0 0 rgb(185 28 28)'
         }"
-        >🦜</span
+        [innerHTML]="parameters.appearance"
       >
+      </span>
     </div>
   </div>
 </div>

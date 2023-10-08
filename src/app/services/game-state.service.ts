@@ -2,122 +2,130 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ICharacter } from '../interfaces/ICharacter';
 import { ICharacterAction } from '../interfaces/ICharacterAction';
+import { ILevel } from '../interfaces/ILevel';
 import { sleep } from '../utils';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameStateService {
+  private _currentLevel: ILevel = {
+    characters: [
+      {
+        id: 1,
+        hp: 10,
+        max_hp: 10,
+        x: 1,
+        y: 1,
+        team: 1,
+        appearance: '&#129415;',
+        actions: [
+          {
+            name: 'Attack',
+            type: 'damage',
+            amount: 3,
+            target: 'enemy',
+          },
+        ],
+        moved: false,
+        player: 'ai',
+      },
+      {
+        id: 2,
+        hp: 10,
+        max_hp: 10,
+        x: 2,
+        y: 1,
+        team: 1,
+        appearance: '&#129415;',
+        actions: [
+          {
+            name: 'Attack',
+            type: 'damage',
+            amount: 3,
+            target: 'enemy',
+          },
+        ],
+        moved: false,
+        player: 'ai',
+      },
+      {
+        id: 3,
+        hp: 10,
+        max_hp: 10,
+        x: 5,
+        y: 1,
+        team: 1,
+        appearance: '&#129415;',
+        actions: [
+          {
+            name: 'Attack',
+            type: 'damage',
+            amount: 3,
+            target: 'enemy',
+          },
+        ],
+        moved: false,
+        player: 'ai',
+      },
+      {
+        id: 4,
+        hp: 10,
+        max_hp: 10,
+        x: 2,
+        y: 4,
+        team: 2,
+        appearance: '&#128015;',
+        actions: [
+          {
+            name: 'Attack',
+            type: 'damage',
+            amount: 3,
+            target: 'enemy',
+          },
+          {
+            name: 'Ram',
+            type: 'damage',
+            amount: 10,
+            uses: 1,
+            uses_left: 1,
+            target: 'enemy',
+          },
+        ],
+        moved: false,
+        player: 'human',
+      },
+      {
+        id: 5,
+        hp: 10,
+        max_hp: 10,
+        x: 4,
+        y: 4,
+        team: 2,
+        appearance: '&#128029;',
+        actions: [
+          {
+            name: 'Attack',
+            type: 'damage',
+            amount: 3,
+            target: 'enemy',
+          },
+          {
+            name: 'Heal',
+            type: 'heal',
+            amount: 10,
+            uses: 4,
+            uses_left: 4,
+            target: 'ally',
+          },
+        ],
+        moved: false,
+        player: 'human',
+      },
+    ],
+  };
   private _currentlySelectedAction: ICharacterAction | null = null;
   private _currentlySelectedCharacter: ICharacter | null = null;
-  private _gameState: ICharacter[] = [
-    {
-      id: 1,
-      hp: 10,
-      max_hp: 10,
-      x: 1,
-      y: 1,
-      team: 1,
-      actions: [
-        {
-          name: 'Attack',
-          type: 'damage',
-          amount: 3,
-          target: 'enemy',
-        },
-      ],
-      moved: false,
-      player: 'ai',
-    },
-    {
-      id: 2,
-      hp: 10,
-      max_hp: 10,
-      x: 2,
-      y: 1,
-      team: 1,
-      actions: [
-        {
-          name: 'Attack',
-          type: 'damage',
-          amount: 3,
-          target: 'enemy',
-        },
-      ],
-      moved: false,
-      player: 'ai',
-    },
-    {
-      id: 3,
-      hp: 10,
-      max_hp: 10,
-      x: 5,
-      y: 1,
-      team: 1,
-      actions: [
-        {
-          name: 'Attack',
-          type: 'damage',
-          amount: 3,
-          target: 'enemy',
-        },
-      ],
-      moved: false,
-      player: 'ai',
-    },
-    {
-      id: 4,
-      hp: 1,
-      max_hp: 10,
-      x: 2,
-      y: 4,
-      team: 2,
-      actions: [
-        {
-          name: 'Attack',
-          type: 'damage',
-          amount: 3,
-          target: 'enemy',
-        },
-        {
-          name: 'Heavy attack',
-          type: 'damage',
-          amount: 10,
-          uses: 1,
-          uses_left: 1,
-          target: 'enemy',
-        },
-      ],
-      moved: false,
-      player: 'human',
-    },
-    {
-      id: 5,
-      hp: 10,
-      max_hp: 10,
-      x: 3,
-      y: 5,
-      team: 2,
-      actions: [
-        {
-          name: 'Attack',
-          type: 'damage',
-          amount: 3,
-          target: 'enemy',
-        },
-        {
-          name: 'Heal',
-          type: 'heal',
-          amount: 10,
-          uses: 4,
-          uses_left: 4,
-          target: 'ally',
-        },
-      ],
-      moved: false,
-      player: 'human',
-    },
-  ];
   private _roundNumber = 1;
 
   public gameEvents$ = new BehaviorSubject<any>({
@@ -131,7 +139,7 @@ export class GameStateService {
   public selectedCharacter$ = new BehaviorSubject<ICharacter | null>(null);
 
   public get gameState() {
-    return [...this._gameState];
+    return [...this._currentLevel.characters];
   }
 
   private get currentlySelectedAction(): ICharacterAction | null {
@@ -176,7 +184,7 @@ export class GameStateService {
         this.resolveAction(
           this.currentlySelectedCharacter,
           selectedCharacter,
-          this.currentlySelectedAction
+          this.currentlySelectedAction,
         );
         this.currentlySelectedAction = null;
         this.currentlySelectedCharacter = null;
@@ -187,15 +195,15 @@ export class GameStateService {
   }
 
   private chooseTarget(attacker: ICharacter): ICharacter {
-    return this._gameState
+    return this._currentLevel.characters
       .filter((character) => character.team !== attacker.team)
       ?.shuffle()
       ?.pop();
   }
 
   private async handleAiMovement(): Promise<void> {
-    for (let character of this._gameState.filter(
-      (character) => character.player === 'ai' && !character.moved
+    for (let character of this._currentLevel.characters.filter(
+      (character) => character.player === 'ai' && !character.moved,
     )) {
       await sleep(300);
       const target = this.chooseTarget(character);
@@ -206,7 +214,9 @@ export class GameStateService {
     }
 
     if (this.gameEvents$.getValue()?.type !== 'battleFinished') {
-      this._gameState.forEach((character) => (character.moved = false));
+      this._currentLevel.characters.forEach(
+        (character) => (character.moved = false),
+      );
       this._roundNumber += 1;
       this.gameEvents$.next({
         type: 'roundStart',
@@ -232,7 +242,7 @@ export class GameStateService {
   private async resolveAction(
     source: ICharacter,
     target: ICharacter,
-    action: ICharacterAction
+    action: ICharacterAction,
   ): Promise<void> {
     if (target) {
       const [oldX, oldY] = [source.x, source.y];
@@ -255,18 +265,23 @@ export class GameStateService {
       source.moved = true;
 
       if (target.hp <= 0) {
-        this._gameState.splice(this._gameState.indexOf(target), 1);
-        this.participatingCharacters$.next(this._gameState);
+        this._currentLevel.characters.splice(
+          this._currentLevel.characters.indexOf(target),
+          1,
+        );
+        this.participatingCharacters$.next(this._currentLevel.characters);
 
         if (
-          this._gameState.filter((character) => character.player === 'human')
-            .length === 0
+          this._currentLevel.characters.filter(
+            (character) => character.player === 'human',
+          ).length === 0
         ) {
           this.onDefeat();
           return;
         } else if (
-          this._gameState.filter((character) => character.player === 'ai')
-            .length === 0
+          this._currentLevel.characters.filter(
+            (character) => character.player === 'ai',
+          ).length === 0
         ) {
           this.onVictory();
           return;
@@ -277,8 +292,8 @@ export class GameStateService {
 
       if (
         source.player === 'human' &&
-        this._gameState.filter(
-          (character) => character.player === 'human' && !character.moved
+        this._currentLevel.characters.filter(
+          (character) => character.player === 'human' && !character.moved,
         ).length === 0
       ) {
         this.handleAiMovement();
