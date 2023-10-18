@@ -1,4 +1,4 @@
-import { ICharacter } from './ICharacter';
+import { ICharacter } from '.';
 
 export interface ILevel {
   characters: ICharacter[];

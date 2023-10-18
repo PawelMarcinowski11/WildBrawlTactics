@@ -6,9 +6,8 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { ICharacter } from 'src/app/interfaces/ICharacter';
-import { ICharacterAction } from 'src/app/interfaces/ICharacterAction';
 import { GameStateService } from '../../services/game-state.service';
+import { ICharacter, ICharacterAction } from 'src/app/interfaces';
 
 @Component({
   selector: 'ani-character',
@@ -53,7 +52,7 @@ export class CharacterComponent {
     return (
       (this.linearGradient ? 'linear' : 'conic') +
       '-gradient(white ' +
-      (1 - this.parameters.hp / this.parameters.max_hp) * 100 +
+      (1 - this.parameters.hp / this.parameters.maxHp) * 100 +
       '%, transparent 0%)'
     );
   }

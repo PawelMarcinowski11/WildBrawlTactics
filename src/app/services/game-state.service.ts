@@ -1,132 +1,22 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ICharacter } from '../interfaces/ICharacter';
-import { ICharacterAction } from '../interfaces/ICharacterAction';
-import { ILevel } from '../interfaces/ILevel';
+import { ICharacter, ICharacterAction, ILevel } from '../interfaces';
 import { sleep } from '../utils';
+import { LevelsService } from './levels.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class GameStateService {
-  private _currentLevel: ILevel = {
-    characters: [
-      {
-        id: 1,
-        hp: 10,
-        max_hp: 10,
-        x: 1,
-        y: 1,
-        team: 1,
-        appearance: '&#129415;',
-        actions: [
-          {
-            name: 'Attack',
-            type: 'damage',
-            amount: 3,
-            target: 'enemy',
-          },
-        ],
-        moved: false,
-        player: 'ai',
-      },
-      {
-        id: 2,
-        hp: 10,
-        max_hp: 10,
-        x: 2,
-        y: 1,
-        team: 1,
-        appearance: '&#129415;',
-        actions: [
-          {
-            name: 'Attack',
-            type: 'damage',
-            amount: 3,
-            target: 'enemy',
-          },
-        ],
-        moved: false,
-        player: 'ai',
-      },
-      {
-        id: 3,
-        hp: 10,
-        max_hp: 10,
-        x: 5,
-        y: 1,
-        team: 1,
-        appearance: '&#129415;',
-        actions: [
-          {
-            name: 'Attack',
-            type: 'damage',
-            amount: 3,
-            target: 'enemy',
-          },
-        ],
-        moved: false,
-        player: 'ai',
-      },
-      {
-        id: 4,
-        hp: 10,
-        max_hp: 10,
-        x: 2,
-        y: 4,
-        team: 2,
-        appearance: '&#128015;',
-        actions: [
-          {
-            name: 'Attack',
-            type: 'damage',
-            amount: 3,
-            target: 'enemy',
-          },
-          {
-            name: 'Ram',
-            type: 'damage',
-            amount: 10,
-            uses: 1,
-            uses_left: 1,
-            target: 'enemy',
-          },
-        ],
-        moved: false,
-        player: 'human',
-      },
-      {
-        id: 5,
-        hp: 10,
-        max_hp: 10,
-        x: 4,
-        y: 4,
-        team: 2,
-        appearance: '&#128029;',
-        actions: [
-          {
-            name: 'Attack',
-            type: 'damage',
-            amount: 3,
-            target: 'enemy',
-          },
-          {
-            name: 'Heal',
-            type: 'heal',
-            amount: 10,
-            uses: 4,
-            uses_left: 4,
-            target: 'ally',
-          },
-        ],
-        moved: false,
-        player: 'human',
-      },
-    ],
-  };
+  private _currentLevel: ILevel = { characters: [] };
   private _currentlySelectedAction: ICharacterAction | null = null;
   private _currentlySelectedCharacter: ICharacter | null = null;
   private _roundNumber = 1;
+
+  constructor(private readonly _levelsService: LevelsService) {
+    this._currentLevel = this._levelsService.generateLevel(1);
+    this.participatingCharacters$.next([...this.gameState]);
+  }
 
   public gameEvents$ = new BehaviorSubject<any>({
     type: 'roundStart',
@@ -256,8 +146,8 @@ export class GameStateService {
         target.hp = target.hp + action.amount;
       }
 
-      if (action.uses_left) {
-        action.uses_left -= 1;
+      if (action.usesLeft) {
+        action.usesLeft -= 1;
       }
 
       [source.x, source.y] = [oldX, oldY];
@@ -286,8 +176,8 @@ export class GameStateService {
           this.onVictory();
           return;
         }
-      } else if (target.hp > target.max_hp) {
-        target.hp = target.max_hp;
+      } else if (target.hp > target.maxHp) {
+        target.hp = target.maxHp;
       }
 
       if (

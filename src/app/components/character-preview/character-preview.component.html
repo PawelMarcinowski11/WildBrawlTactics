@@ -1,17 +1,17 @@
-<div class="w-full h-full rounded-br-md max-md:rounded-bl-md text-gray-900">
-  <div *ngIf="selectedCharacter" class="font-bold sticky top-0">
+<div class="w-full h-full text-gray-900 rounded-br-md max-md:rounded-bl-md">
+  <div *ngIf="selectedCharacter" class="sticky top-0 font-bold">
     <div class="p-1 pt-0">
-      <div class="p-1 rounded-md bg-fuchsia-100 border-2 border-gray-900">
-        HP: {{ selectedCharacter.hp }} / {{ selectedCharacter.max_hp }}
+      <div class="p-1 border-2 border-gray-900 rounded-md bg-fuchsia-100">
+        HP: {{ selectedCharacter.hp }} / {{ selectedCharacter.maxHp }}
       </div>
     </div>
   </div>
   <div
     *ngIf="selectedCharacter && !isPlayerCharacter()"
-    class="font-bold sticky top-0"
+    class="sticky top-0 font-bold"
   >
     <div class="p-1 pt-0">
-      <div class="p-1 rounded-md bg-red-400 border-2 border-gray-900">
+      <div class="p-1 bg-red-400 border-2 border-gray-900 rounded-md">
         This is enemy character
       </div>
     </div>
@@ -37,14 +37,14 @@
       }}"
       (click)="$event.stopPropagation(); onActionSelect(action)"
     >
-      <span class="text-center font-bold">
+      <span class="font-bold text-center">
         {{ action.name | uppercase }}
       </span>
-      <span class="text-left font-bold text-sm">
+      <span class="text-sm font-bold text-left">
         {{ action.type | uppercase }}: {{ action.amount }}
       </span>
-      <span *ngIf="action.uses" class="text-left font-bold text-sm">
-        USES: {{ action.uses_left }} / {{ action.uses }}
+      <span *ngIf="action.uses" class="text-sm font-bold text-left">
+        USES: {{ action.usesLeft }} / {{ action.uses }}
       </span>
     </div>
   </div>

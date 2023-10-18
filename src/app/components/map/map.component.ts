@@ -1,7 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { ChangeDetectorRef, Component } from '@angular/core';
 import { filter } from 'rxjs';
-import { ICharacter } from 'src/app/interfaces/ICharacter';
+import { ICharacter } from 'src/app/interfaces/icharacter';
 import { GameStateService } from '../../services/game-state.service';
 
 @Component({
@@ -26,6 +26,7 @@ export class MapComponent {
     this._gameStateService.participatingCharacters$.subscribe(
       (participatingCharacters) => {
         this.participatingCharacters = participatingCharacters;
+        console.log(this.participatingCharacters);
       },
     );
 

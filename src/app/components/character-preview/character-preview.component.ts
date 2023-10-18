@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
-import { ICharacter } from 'src/app/interfaces/ICharacter';
-import { ICharacterAction } from 'src/app/interfaces/ICharacterAction';
 import { GameStateService } from '../../services/game-state.service';
+import { ICharacter, ICharacterAction } from 'src/app/interfaces';
 
 @Component({
   selector: 'ani-character-preview',
@@ -25,7 +24,7 @@ export class CharacterPreviewComponent {
     return (
       this.isPlayerCharacter() &&
       !this.selectedCharacter?.moved &&
-      (!action.uses || !!action.uses_left)
+      (!action.uses || !!action.usesLeft)
     );
   }
 
@@ -37,7 +36,7 @@ export class CharacterPreviewComponent {
     if (
       this.selectedCharacter?.player === 'human' &&
       !this.selectedCharacter?.moved &&
-      (!action.uses || action.uses_left)
+      (!action.uses || action.usesLeft)
     ) {
       this._gameStateService.onActionSelect(
         this.selectedAction !== action ? action : null,
