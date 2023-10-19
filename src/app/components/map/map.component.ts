@@ -9,8 +9,14 @@ import { GameStateService } from '../../services/game-state.service';
   templateUrl: './map.component.html',
   styles: [],
   animations: [
-    trigger('leave', [
-      transition(':leave', [animate(100, style({ transform: 'scale(0)' }))]),
+    trigger('EnterAndLeave', [
+      transition(':enter', [
+        style({ transform: 'scale(0)' }),
+        animate('500ms ease-in', style({ transform: 'scale(1)' })),
+      ]),
+      transition(':leave', [
+        animate('200ms', style({ transform: 'scale(0)' })),
+      ]),
     ]),
   ],
 })
@@ -26,7 +32,6 @@ export class MapComponent {
     this._gameStateService.participatingCharacters$.subscribe(
       (participatingCharacters) => {
         this.participatingCharacters = participatingCharacters;
-        console.log(this.participatingCharacters);
       },
     );
 
@@ -45,5 +50,10 @@ export class MapComponent {
 
   public deselect(): void {
     this._gameStateService.onDeselect();
+  }
+
+  public onNextLevelClick(): void {
+    this.battleResult = undefined;
+    this._gameStateService.nextLevel();
   }
 }

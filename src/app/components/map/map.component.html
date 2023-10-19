@@ -6,7 +6,7 @@
     class="w-full max-md:max-w-[65dvh] md:w-full flex justify-center content-center flex-grow relative"
   >
     <div
-      class="mt-1 p-2 bg-fuchsia-100 text-gray-900 text-center font-bold rounded-md max-md:absolute bottom-0 border-2 border-gray-900"
+      class="bottom-0 p-2 mt-1 font-bold text-center text-gray-900 border-2 border-gray-900 rounded-md bg-fuchsia-100 max-md:absolute"
     >
       {{ "Round " + roundNumber | uppercase }}
     </div>
@@ -15,29 +15,30 @@
     class="w-full max-md:max-w-[65dvh] md:w-[calc(min(100dvh-48px,100vw-150px))] aspect-square relative md:rounded-bl-md"
   >
     <ani-character
-      @leave
+      @EnterAndLeave
       *ngFor="let character of participatingCharacters"
       [parameters]="character"
       [style.left]="(+character.x - 1) * 20 + '%'"
       [style.top]="(+character.y - 1) * 20 + '%'"
-      class="w-1/5 h-1/5 absolute block transition-all"
+      class="absolute block w-1/5 transition-all h-1/5"
     ></ani-character>
   </div>
   <div
     class="w-full max-md:max-w-[65dvh] md:w-[150px] md:h-[calc(min(100dvh-48px,100vw-150px))] relative max-md:flex-grow"
   >
     <ani-character-preview
-      class="absolute w-full md:h-full max-h-full overflow-auto"
+      class="absolute w-full max-h-full overflow-auto md:h-full"
     ></ani-character-preview>
   </div>
 </div>
 <div
   *ngIf="battleResult"
-  class="fixed w-screen h-screen flex items-center justify-center top-0"
+  class="fixed top-0 flex items-center justify-center w-screen h-screen"
 >
   <div
-    class="w-80 h-40 bg-amber-300 rounded-md flex items-center justify-center font-bold border-2 border-gray-900"
+    class="flex flex-col items-center justify-center h-40 font-bold border-2 border-gray-900 rounded-md w-80 bg-amber-300"
   >
     {{ battleResult | uppercase }}
+    <button class="p-1 mt-1 border-2 border-gray-900 rounded-md bg-amber-100 hoverable:hover:bg-amber-50" (click)="onNextLevelClick()">{{ 'Next Level' | uppercase }}</button>
   </div>
 </div>

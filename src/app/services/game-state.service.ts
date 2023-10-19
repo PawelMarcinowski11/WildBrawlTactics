@@ -11,10 +11,13 @@ export class GameStateService {
   private _currentLevel: ILevel = { characters: [] };
   private _currentlySelectedAction: ICharacterAction | null = null;
   private _currentlySelectedCharacter: ICharacter | null = null;
+  private _currentLevelNumber = 1;
   private _roundNumber = 1;
 
   constructor(private readonly _levelsService: LevelsService) {
-    this._currentLevel = this._levelsService.generateLevel(1);
+    this._currentLevel = this._levelsService.generateLevel(
+      this.currentLevelNumber,
+    );
     this.participatingCharacters$.next([...this.gameState]);
   }
 
@@ -30,6 +33,13 @@ export class GameStateService {
 
   public get gameState() {
     return [...this._currentLevel.characters];
+  }
+
+  public get currentLevelNumber() {
+    return this._currentLevelNumber;
+  }
+  public set currentLevelNumber(value) {
+    this._currentLevelNumber = value;
   }
 
   private get currentlySelectedAction(): ICharacterAction | null {
@@ -53,6 +63,31 @@ export class GameStateService {
       this.currentlySelectedAction = null;
       this.selectedCharacter$.next(character);
     }
+  }
+
+  public nextLevel(): void {
+    this.currentLevelNumber += 1;
+
+    this._currentLevel.characters.forEach((character) => {
+      character.hp = character.maxHp;
+      character.moved = false;
+      character.actions.forEach((action) => {
+        if (action.uses) {
+          action.usesLeft = action.uses;
+        }
+      });
+    });
+
+    this._currentLevel = this._levelsService.generateLevel(
+      this.currentLevelNumber,
+    );
+    this.participatingCharacters$.next([...this.gameState]);
+
+    this._roundNumber = 1;
+    this.gameEvents$.next({
+      type: 'roundStart',
+      roundNumber: this._roundNumber,
+    });
   }
 
   public onActionSelect(selectedAction: ICharacterAction | null): void {
