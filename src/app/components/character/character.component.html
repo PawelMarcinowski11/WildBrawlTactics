@@ -13,6 +13,7 @@
   <div class="w-full h-full animate-bounce">
     <div class="absolute inline-block w-full h-full align-middle">
       <span
+        translate="no"
         class="inline-block"
         [ngStyle]="{
           'font-size': calculatedFontSize * 0.75 + 'px',
@@ -29,6 +30,7 @@
     </div>
     <div #overlay class="absolute w-full h-full text-transparent">
       <span
+        translate="no"
         class="{{ linearGradient ? 'inline-block' : '' }}"
         [ngStyle]="{
           'font-size': calculatedFontSize * 0.75 + 'px',
@@ -51,5 +53,13 @@
       >
       </span>
     </div>
+  </div>
+  <div class="absolute flex bottom-[10%] w-full justify-center rounded-md ">
+    <div class="border-2 px-1 min-w-[65%] text-center whitespace-nowrap overflow-hidden bg-pink-100 border-gray-900 rounded-md"
+    [ngClass]="{
+      'bg-red-300': parameters.player === 'ai' && !isSelected(),
+      'bg-green-300': parameters.player === 'human' && !isSelected(),
+      'bg-blue-300': isSelected(),
+    }">{{ parameters.hp }} / {{ parameters.maxHp }}</div>
   </div>
 </div>
