@@ -56,4 +56,9 @@ export class MapComponent {
     this.battleResult = undefined;
     this._gameStateService.nextLevel();
   }
+
+  public onRestart(): void {
+    this.battleResult = undefined;
+    this._gameStateService.restartLevel();
+  }
 }

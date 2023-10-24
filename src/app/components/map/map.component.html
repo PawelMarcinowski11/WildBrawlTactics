@@ -39,6 +39,6 @@
     class="flex flex-col items-center justify-center h-40 font-bold border-2 border-gray-900 rounded-md w-80 bg-amber-300"
   >
     {{ battleResult | uppercase }}
-    <button class="p-1 mt-1 border-2 border-gray-900 rounded-md bg-amber-100 hoverable:hover:bg-amber-50" (click)="onNextLevelClick()">{{ 'Next Level' | uppercase }}</button>
+    <button class="p-1 mt-1 border-2 border-gray-900 rounded-md bg-amber-100 hoverable:hover:bg-amber-50" (click)="battleResult === 'Victory!!!!!!' ? onNextLevelClick() : onRestart()">{{ battleResult === 'Victory!!!!!!' ? 'Next Level' : 'Restart' | uppercase }}</button>
   </div>
 </div>

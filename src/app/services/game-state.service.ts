@@ -65,29 +65,14 @@ export class GameStateService {
     }
   }
 
+  public restartLevel(): void {
+    this.initializeLevel();
+  }
+
   public nextLevel(): void {
     this.currentLevelNumber += 1;
 
-    this._currentLevel.characters.forEach((character) => {
-      character.hp = character.maxHp;
-      character.moved = false;
-      character.actions.forEach((action) => {
-        if (action.uses) {
-          action.usesLeft = action.uses;
-        }
-      });
-    });
-
-    this._currentLevel = this._levelsService.generateLevel(
-      this.currentLevelNumber,
-    );
-    this.participatingCharacters$.next([...this.gameState]);
-
-    this._roundNumber = 1;
-    this.gameEvents$.next({
-      type: 'roundStart',
-      roundNumber: this._roundNumber,
-    });
+    this.initializeLevel();
   }
 
   public onActionSelect(selectedAction: ICharacterAction | null): void {
@@ -117,6 +102,31 @@ export class GameStateService {
     } else {
       this.currentlySelectedCharacter = selectedCharacter;
     }
+  }
+
+  private initializeLevel(): void {
+    this._currentLevel = this._levelsService.generateLevel(
+      this.currentLevelNumber,
+    );
+
+    this._currentLevel.characters.forEach((character) => {
+      character.hp = character.maxHp;
+      character.moved = false;
+      character.actions.forEach((action) => {
+        if (action.uses) {
+          action.usesLeft = action.uses;
+        }
+      });
+    });
+
+    this.participatingCharacters$.next([...this.gameState]);
+
+    this._roundNumber = 1;
+
+    this.gameEvents$.next({
+      type: 'roundStart',
+      roundNumber: this._roundNumber,
+    });
   }
 
   private chooseTarget(attacker: ICharacter): ICharacter {
