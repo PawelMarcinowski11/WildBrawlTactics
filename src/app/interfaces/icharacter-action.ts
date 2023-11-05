@@ -1,12 +1,12 @@
-import { ActionTargets, ActionTypes } from '../enums';
+import { ActionTarget, ActionType } from '../enums';
 
 export interface ICharacterAction {
   amount: number;
   amountGrowth: number;
-  timesUpgraded: number;
   name: string;
-  target: ActionTargets;
-  type: ActionTypes;
+  target: ActionTarget;
+  timesUpgraded: number;
+  type: ActionType;
   uses?: number;
   usesLeft?: number;
 }

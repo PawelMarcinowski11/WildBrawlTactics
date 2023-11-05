@@ -1,4 +1,4 @@
-export enum ActionTargets {
+export enum ActionTarget {
   ENEMY = 'enemy',
   ALLY = 'ally',
 }

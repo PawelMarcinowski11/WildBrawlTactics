@@ -1,3 +1,4 @@
-export { ActionTargets } from './action-targets';
-export { ActionTypes } from './action-types';
-export { PlayerTypes } from './player-types';
+export { ActionTarget } from './action-target';
+export { ActionType } from './action-type';
+export { PlayerType } from './player-type';
+export { Status } from './status';

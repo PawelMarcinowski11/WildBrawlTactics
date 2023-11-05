@@ -1,4 +1,4 @@
-import { ActionTargets, ActionTypes, PlayerTypes } from '../enums';
+import { ActionTarget, ActionType, PlayerType } from '../enums';
 import { ICharacter } from '../interfaces';
 
 export class Bat implements ICharacter {
@@ -6,21 +6,22 @@ export class Bat implements ICharacter {
     public x: number,
     public y: number,
     public timesUpgraded = 0,
-    public player = PlayerTypes.AI,
+    public player = PlayerType.AI,
     public team = 0,
     public moved = false,
     public hp = 10,
     public maxHp = 10,
     public hpGrowth = 3,
     public appearance = '🦇',
+    public statuses = [],
     public actions = [
       {
         name: 'Bite',
-        type: ActionTypes.DAMAGE,
+        type: ActionType.DAMAGE,
         amount: 3,
         amountGrowth: 1,
         timesUpgraded: 0,
-        target: ActionTargets.ENEMY,
+        target: ActionTarget.ENEMY,
       },
     ],
     public id = crypto.randomUUID(),

@@ -1,17 +1,18 @@
 import { ICharacterAction } from '.';
-import { PlayerTypes } from '../enums';
+import { PlayerType, Status } from '../enums';
 
 export interface ICharacter {
   actions: ICharacterAction[];
   appearance: string;
   hp: number;
   hpGrowth: number;
-  timesUpgraded: number;
   id: string;
   maxHp: number;
   moved: boolean;
-  player: PlayerTypes;
+  player: PlayerType;
+  statuses: Status[];
   team: number;
+  timesUpgraded: number;
   x: number;
   y: number;
 }

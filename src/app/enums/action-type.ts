@@ -1,4 +1,4 @@
-export enum ActionTypes {
+export enum ActionType {
   DAMAGE = 'damage',
   HEAL = 'heal',
 }

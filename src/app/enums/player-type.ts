@@ -1,4 +1,4 @@
-export enum PlayerTypes {
+export enum PlayerType {
   AI = 'ai',
   HUMAN = 'human',
 }

@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
+import { ActionTarget, ActionType, PlayerType } from '../enums';
 import { ICharacter } from '../interfaces';
-import { ActionTargets, ActionTypes, PlayerTypes } from '../enums';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlayerCharactersService {
-  constructor() {}
-
   private _playerCharacters: ICharacter[] = [
     {
       id: crypto.randomUUID(),
@@ -22,25 +20,26 @@ export class PlayerCharactersService {
       actions: [
         {
           name: 'Kick',
-          type: ActionTypes.DAMAGE,
+          type: ActionType.DAMAGE,
           amount: 3,
           amountGrowth: 2,
           timesUpgraded: 0,
-          target: ActionTargets.ENEMY,
+          target: ActionTarget.ENEMY,
         },
         {
           name: 'Ram',
-          type: ActionTypes.DAMAGE,
+          type: ActionType.DAMAGE,
           amount: 10,
           amountGrowth: 5,
           timesUpgraded: 0,
           uses: 1,
           usesLeft: 1,
-          target: ActionTargets.ENEMY,
+          target: ActionTarget.ENEMY,
         },
       ],
       moved: false,
-      player: PlayerTypes.HUMAN,
+      player: PlayerType.HUMAN,
+      statuses: [],
     },
     {
       id: crypto.randomUUID(),
@@ -55,15 +54,16 @@ export class PlayerCharactersService {
       actions: [
         {
           name: 'Stab',
-          type: ActionTypes.DAMAGE,
+          type: ActionType.DAMAGE,
           amount: 3,
           amountGrowth: 2,
           timesUpgraded: 0,
-          target: ActionTargets.ENEMY,
+          target: ActionTarget.ENEMY,
         },
       ],
       moved: false,
-      player: PlayerTypes.HUMAN,
+      player: PlayerType.HUMAN,
+      statuses: [],
     },
     {
       id: crypto.randomUUID(),
@@ -78,27 +78,30 @@ export class PlayerCharactersService {
       actions: [
         {
           name: 'Sting',
-          type: ActionTypes.DAMAGE,
+          type: ActionType.DAMAGE,
           amount: 3,
           amountGrowth: 2,
           timesUpgraded: 0,
-          target: ActionTargets.ENEMY,
+          target: ActionTarget.ENEMY,
         },
         {
           name: 'Heal',
-          type: ActionTypes.HEAL,
+          type: ActionType.HEAL,
           amount: 10,
           amountGrowth: 5,
           timesUpgraded: 0,
           uses: 4,
           usesLeft: 4,
-          target: ActionTargets.ALLY,
+          target: ActionTarget.ALLY,
         },
       ],
       moved: false,
-      player: PlayerTypes.HUMAN,
+      player: PlayerType.HUMAN,
+      statuses: [],
     },
   ];
+
+  constructor() {}
 
   public getPlayerCharacters(): ICharacter[] {
     return this._playerCharacters;
