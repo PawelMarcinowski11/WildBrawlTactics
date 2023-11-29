@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ActionTarget, ActionType, PlayerType } from '../enums';
 import { ICharacter } from '../interfaces';
+import { Spiky } from '../statuses';
 
 @Injectable({
   providedIn: 'root',
@@ -60,10 +61,20 @@ export class PlayerCharactersService {
           timesUpgraded: 0,
           target: ActionTarget.ENEMY,
         },
+        {
+          name: 'Defensive stance',
+          type: ActionType.DEFEND,
+          amount: 1,
+          amountGrowth: 0,
+          timesUpgraded: 0,
+          uses: 3,
+          usesLeft: 3,
+          target: ActionTarget.SELF,
+        },
       ],
       moved: false,
       player: PlayerType.HUMAN,
-      statuses: [],
+      statuses: [new Spiky()],
     },
     {
       id: crypto.randomUUID(),

@@ -3,10 +3,17 @@
   class="w-full transition-all cursor-pointer select-none aspect-square"
   (click)="$event.stopPropagation(); onClick()"
 >
-  <div *ngIf="isEnemy() || isSelected() || isFriendly()" class="absolute w-full h-full p-2 xs:p-4">
+  <div
+    *ngIf="isEnemy() || isSelected() || isFriendly()"
+    class="absolute w-full h-full p-2 xs:p-4"
+  >
     <div
       class="h-full w-full border-4 {{
-        isEnemy() ? 'border-red-700' : isFriendly() ? 'border-lime-500' : 'border-blue-700'
+        isEnemy()
+          ? 'border-red-700'
+          : isFriendly()
+          ? 'border-lime-500'
+          : 'border-blue-700'
       }} rounded-full"
     ></div>
   </div>
@@ -54,12 +61,30 @@
       </span>
     </div>
   </div>
-  <div class="absolute flex bottom-[10%] w-full justify-center rounded-md ">
-    <div class="border-2 px-1 min-w-[65%] text-center whitespace-nowrap overflow-hidden bg-pink-100 border-gray-900 rounded-md"
-    [ngClass]="{
-      'bg-red-300': parameters.player === 'ai' && !isSelected(),
-      'bg-green-300': parameters.player === 'human' && !isSelected(),
-      'bg-blue-300': isSelected(),
-    }">{{ parameters.hp }} / {{ parameters.maxHp }}</div>
+  <div
+    class="absolute flex bottom-[10%] w-full justify-center rounded-md flex-col"
+  >
+    <div class="flex gap-1 mb-1">
+      <div
+        *ngFor="let status of parameters.statuses"
+        translate="no"
+        [ngStyle]="{
+          'font-family': 'NotoColorEmoji-Regular',
+          'text-shadow':
+            '-1px -1px 0 rgb(17 24 39), 1px -1px 0 rgb(17 24 39), -1px 1px 0 rgb(17 24 39), 1px 1px 0 rgb(17 24 39)'
+        }"
+        [innerHTML]="status.appearance"
+      ></div>
+    </div>
+    <div
+      class="border-2 px-1 min-w-[65%] text-center whitespace-nowrap overflow-hidden bg-pink-100 border-gray-900 rounded-md"
+      [ngClass]="{
+        'bg-red-300': parameters.player === 'ai' && !isSelected(),
+        'bg-green-300': parameters.player === 'human' && !isSelected(),
+        'bg-blue-300': isSelected()
+      }"
+    >
+      {{ parameters.hp }} / {{ parameters.maxHp }}
+    </div>
   </div>
 </div>

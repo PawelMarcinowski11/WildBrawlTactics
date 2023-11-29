@@ -6,8 +6,9 @@ import {
   Renderer2,
   ViewChild,
 } from '@angular/core';
-import { GameStateService } from '../../services/game-state.service';
+import { ActionTarget } from 'src/app/enums';
 import { ICharacter, ICharacterAction } from 'src/app/interfaces';
+import { GameStateService } from '../../services/game-state.service';
 
 @Component({
   selector: 'ani-character',
@@ -59,20 +60,25 @@ export class CharacterComponent {
 
   public isEnemy(): boolean {
     return (
-      this.selectedAction?.target === 'enemy' &&
+      this.selectedAction?.target === ActionTarget.ENEMY &&
       this.selectedCharacter?.team !== this.parameters.team
     );
   }
 
   public isFriendly(): boolean {
     return (
-      this.selectedAction?.target === 'ally' &&
-      this.selectedCharacter?.team === this.parameters.team
+      (this.selectedAction?.target === ActionTarget.ALLY &&
+        this.selectedCharacter?.team === this.parameters.team) ||
+      (this.selectedAction?.target === ActionTarget.SELF &&
+        this.selectedCharacter?.id === this.parameters.id)
     );
   }
 
   public isSelected(): boolean {
-    return this.selectedCharacter?.id === this.parameters.id;
+    return (
+      this.selectedAction?.target !== ActionTarget.SELF &&
+      this.selectedCharacter?.id === this.parameters.id
+    );
   }
 
   public ngAfterViewInit(): void {

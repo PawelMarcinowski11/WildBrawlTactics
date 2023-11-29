@@ -1,5 +1,5 @@
-import { ICharacterAction } from '.';
-import { PlayerType, Status } from '../enums';
+import { ICharacterAction, IStatus } from '.';
+import { PlayerType } from '../enums';
 
 export interface ICharacter {
   actions: ICharacterAction[];
@@ -10,7 +10,7 @@ export interface ICharacter {
   maxHp: number;
   moved: boolean;
   player: PlayerType;
-  statuses: Status[];
+  statuses: IStatus[];
   team: number;
   timesUpgraded: number;
   x: number;

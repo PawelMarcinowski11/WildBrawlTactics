@@ -1,6 +1,9 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { ActionTarget, ActionType } from '../enums';
+import { StatusKeys } from '../enums/status-keys';
 import { ICharacter, ICharacterAction, ILevel } from '../interfaces';
+import { Defender } from '../statuses';
 import { sleep } from '../utils';
 import { LevelsService } from './levels.service';
 
@@ -9,17 +12,10 @@ import { LevelsService } from './levels.service';
 })
 export class GameStateService {
   private _currentLevel: ILevel = { characters: [] };
+  private _currentLevelNumber = 1;
   private _currentlySelectedAction: ICharacterAction | null = null;
   private _currentlySelectedCharacter: ICharacter | null = null;
-  private _currentLevelNumber = 1;
   private _roundNumber = 1;
-
-  constructor(private readonly _levelsService: LevelsService) {
-    this._currentLevel = this._levelsService.generateLevel(
-      this.currentLevelNumber,
-    );
-    this.participatingCharacters$.next([...this.gameState]);
-  }
 
   public gameEvents$ = new BehaviorSubject<any>({
     type: 'roundStart',
@@ -31,15 +27,23 @@ export class GameStateService {
   public selectedAction$ = new BehaviorSubject<ICharacterAction | null>(null);
   public selectedCharacter$ = new BehaviorSubject<ICharacter | null>(null);
 
-  public get gameState() {
-    return [...this._currentLevel.characters];
+  constructor(private readonly _levelsService: LevelsService) {
+    this._currentLevel = this._levelsService.generateLevel(
+      this.currentLevelNumber,
+    );
+    this.participatingCharacters$.next([...this.gameState]);
   }
 
   public get currentLevelNumber() {
     return this._currentLevelNumber;
   }
+
   public set currentLevelNumber(value) {
     this._currentLevelNumber = value;
+  }
+
+  public get gameState() {
+    return [...this._currentLevel.characters];
   }
 
   private get currentlySelectedAction(): ICharacterAction | null {
@@ -65,10 +69,6 @@ export class GameStateService {
     }
   }
 
-  public restartLevel(): void {
-    this.initializeLevel();
-  }
-
   public nextLevel(): void {
     this.currentLevelNumber += 1;
 
@@ -83,24 +83,76 @@ export class GameStateService {
     this.currentlySelectedCharacter = null;
   }
 
-  public onSelect(selectedCharacter: ICharacter): void {
+  public onSelect(targetCharacter: ICharacter): void {
     if (this.currentlySelectedAction && this.currentlySelectedCharacter) {
       if (
-        (this.currentlySelectedAction.target === 'enemy' &&
-          this.currentlySelectedCharacter.team !== selectedCharacter.team) ||
-        (this.currentlySelectedAction.target === 'ally' &&
-          this.currentlySelectedCharacter.team === selectedCharacter.team)
+        (this.currentlySelectedAction.target === ActionTarget.ENEMY &&
+          this.currentlySelectedCharacter.team !== targetCharacter.team) ||
+        (this.currentlySelectedAction.target === ActionTarget.ALLY &&
+          this.currentlySelectedCharacter.team === targetCharacter.team) ||
+        (this.currentlySelectedAction.target === ActionTarget.SELF &&
+          this.currentlySelectedCharacter.id === targetCharacter.id)
       ) {
         this.resolveAction(
           this.currentlySelectedCharacter,
-          selectedCharacter,
+          targetCharacter,
           this.currentlySelectedAction,
         );
         this.currentlySelectedAction = null;
         this.currentlySelectedCharacter = null;
       }
     } else {
-      this.currentlySelectedCharacter = selectedCharacter;
+      this.currentlySelectedCharacter = targetCharacter;
+    }
+  }
+
+  public restartLevel(): void {
+    this.initializeLevel();
+  }
+
+  private chooseTarget(attacker: ICharacter): ICharacter {
+    const enemyCharacters = this._currentLevel.characters.filter(
+      (character) => character.team !== attacker.team,
+    );
+
+    const enemyDefenders = enemyCharacters.filter((character) =>
+      character.statuses.find((status) => status.key === StatusKeys.DEFENDER),
+    );
+
+    const availableTargets = enemyDefenders.length
+      ? enemyDefenders
+      : enemyCharacters;
+
+    return availableTargets?.shuffle()[0];
+  }
+
+  private async handleAiMovement(): Promise<void> {
+    for (let character of this._currentLevel.characters.filter(
+      (character) => character.player === 'ai' && !character.moved,
+    )) {
+      await sleep(300);
+      const target = this.chooseTarget(character);
+
+      if (target) {
+        await this.resolveAction(character, target, character.actions[0]);
+      }
+    }
+
+    if (this.gameEvents$.getValue()?.type !== 'battleFinished') {
+      this._currentLevel.characters.forEach((character) => {
+        character.moved = false;
+        character.statuses.forEach((status) => {
+          status.duration -= 1;
+        });
+        character.statuses = character.statuses.filter(
+          (status) => status.duration > 0,
+        );
+      });
+      this._roundNumber += 1;
+      this.gameEvents$.next({
+        type: 'roundStart',
+        roundNumber: this._roundNumber,
+      });
     }
   }
 
@@ -117,6 +169,9 @@ export class GameStateService {
           action.usesLeft = action.uses;
         }
       });
+      character.statuses = character.statuses.filter(
+        (status) => status.duration === Infinity,
+      );
     });
 
     this.participatingCharacters$.next([...this.gameState]);
@@ -127,37 +182,6 @@ export class GameStateService {
       type: 'roundStart',
       roundNumber: this._roundNumber,
     });
-  }
-
-  private chooseTarget(attacker: ICharacter): ICharacter {
-    return this._currentLevel.characters
-      .filter((character) => character.team !== attacker.team)
-      ?.shuffle()
-      ?.pop();
-  }
-
-  private async handleAiMovement(): Promise<void> {
-    for (let character of this._currentLevel.characters.filter(
-      (character) => character.player === 'ai' && !character.moved,
-    )) {
-      await sleep(300);
-      const target = this.chooseTarget(character);
-
-      if (target) {
-        await this.resolveAction(character, target, character.actions[0]);
-      }
-    }
-
-    if (this.gameEvents$.getValue()?.type !== 'battleFinished') {
-      this._currentLevel.characters.forEach(
-        (character) => (character.moved = false),
-      );
-      this._roundNumber += 1;
-      this.gameEvents$.next({
-        type: 'roundStart',
-        roundNumber: this._roundNumber,
-      });
-    }
   }
 
   private onDefeat(): void {
@@ -185,10 +209,24 @@ export class GameStateService {
 
       await sleep(150);
 
-      if (action.type === 'damage') {
+      if (action.type === ActionType.DAMAGE) {
         target.hp = target.hp - action.amount;
-      } else if (action.type === 'heal') {
+
+        if (target.statuses.find((status) => status.key === StatusKeys.SPIKY)) {
+          source.hp = source.hp - 2;
+        }
+      } else if (action.type === ActionType.HEAL) {
         target.hp = target.hp + action.amount;
+      } else if (action.type === ActionType.DEFEND) {
+        const defenderStatus = target.statuses.find(
+          (status) => status.key === StatusKeys.DEFENDER,
+        );
+
+        if (defenderStatus) {
+          defenderStatus.duration += action.amount;
+        } else {
+          target.statuses.push(new Defender(action.amount));
+        }
       }
 
       if (action.usesLeft) {
@@ -200,29 +238,15 @@ export class GameStateService {
       source.moved = true;
 
       if (target.hp <= 0) {
-        this._currentLevel.characters.splice(
-          this._currentLevel.characters.indexOf(target),
-          1,
-        );
-        this.participatingCharacters$.next(this._currentLevel.characters);
-
-        if (
-          this._currentLevel.characters.filter(
-            (character) => character.player === 'human',
-          ).length === 0
-        ) {
-          this.onDefeat();
-          return;
-        } else if (
-          this._currentLevel.characters.filter(
-            (character) => character.player === 'ai',
-          ).length === 0
-        ) {
-          this.onVictory();
-          return;
-        }
+        this.resolveKill(target);
       } else if (target.hp > target.maxHp) {
         target.hp = target.maxHp;
+      }
+
+      if (source.hp <= 0) {
+        this.resolveKill(source);
+      } else if (source.hp > source.maxHp) {
+        source.hp = source.maxHp;
       }
 
       if (
@@ -233,6 +257,30 @@ export class GameStateService {
       ) {
         this.handleAiMovement();
       }
+    }
+  }
+
+  private resolveKill(target: ICharacter): void {
+    this._currentLevel.characters.splice(
+      this._currentLevel.characters.indexOf(target),
+      1,
+    );
+    this.participatingCharacters$.next(this._currentLevel.characters);
+
+    if (
+      this._currentLevel.characters.filter(
+        (character) => character.player === 'human',
+      ).length === 0
+    ) {
+      this.onDefeat();
+      return;
+    } else if (
+      this._currentLevel.characters.filter(
+        (character) => character.player === 'ai',
+      ).length === 0
+    ) {
+      this.onVictory();
+      return;
     }
   }
 }
