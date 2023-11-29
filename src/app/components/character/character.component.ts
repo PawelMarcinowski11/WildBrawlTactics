@@ -13,7 +13,6 @@ import { GameStateService } from '../../services/game-state.service';
 @Component({
   selector: 'ani-character',
   templateUrl: './character.component.html',
-  styles: [],
 })
 export class CharacterComponent {
   @Input() public parameters!: ICharacter;

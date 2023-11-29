@@ -16,6 +16,22 @@
       </div>
     </div>
   </div>
+  <div *ngFor="let status of selectedCharacter?.statuses" class="font-bold">
+    <div class="p-1 pt-0">
+      <div class="p-1 bg-violet-400 border-2 border-gray-900 rounded-md">
+        <span
+          translate="no"
+          [ngStyle]="{
+            'font-family': 'NotoColorEmoji-Regular',
+            'text-shadow':
+              '-1px -1px 0 rgb(17 24 39), 1px -1px 0 rgb(17 24 39), -1px 1px 0 rgb(17 24 39), 1px 1px 0 rgb(17 24 39)'
+          }"
+          [innerHTML]="status.appearance"
+        ></span>
+        {{ status.description }}
+      </div>
+    </div>
+  </div>
   <div class="grid grid-cols-2 md:grid-cols-1">
     <div
       *ngFor="

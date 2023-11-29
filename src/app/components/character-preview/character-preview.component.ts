@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { GameStateService } from '../../services/game-state.service';
 import { ICharacter, ICharacterAction } from 'src/app/interfaces';
+import { GameStateService } from '../../services/game-state.service';
 
 @Component({
   selector: 'ani-character-preview',
   templateUrl: './character-preview.component.html',
-  styles: [],
 })
 export class CharacterPreviewComponent {
   public selectedAction!: ICharacterAction | null;

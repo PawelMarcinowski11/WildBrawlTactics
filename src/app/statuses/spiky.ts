@@ -5,8 +5,8 @@ export class Spiky implements IStatus {
   constructor(
     public duration = Infinity,
     public appearance = '🦔',
-    public description = `Attackers targeting this unit receive 2 damage`,
+    public description = `Attackers targeting this character receive 2 damage`,
     public key = StatusKeys.SPIKY,
-    public name = 'Spikes',
+    public name = 'Spiky',
   ) {}
 }

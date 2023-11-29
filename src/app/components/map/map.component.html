@@ -3,13 +3,19 @@
   (click)="deselect()"
 >
   <div
-    class="w-full max-md:max-w-[65dvh] md:w-full flex justify-center content-center flex-grow relative"
+    class="w-full max-md:max-w-[65dvh] md:w-full gap-4 flex justify-center content-center flex-grow relative"
   >
     <div
       class="bottom-0 p-2 mt-1 font-bold text-center text-gray-900 border-2 border-gray-900 rounded-md bg-fuchsia-100 max-md:absolute"
     >
       {{ "Round " + roundNumber | uppercase }}
     </div>
+    <button
+      class="bottom-0 right-0 p-2 mt-1 font-bold text-center text-gray-900 border-2 border-gray-900 rounded-md bg-orange-300 max-md:absolute"
+      (click)="onRestart()"
+    >
+      {{ "Restart?" | uppercase }}
+    </button>
   </div>
   <div
     class="w-full max-md:max-w-[65dvh] md:w-[calc(min(100dvh-48px,100vw-150px))] aspect-square relative md:rounded-bl-md"
@@ -24,7 +30,7 @@
     ></ani-character>
   </div>
   <div
-    class="w-full max-md:max-w-[65dvh] md:w-[150px] md:h-[calc(min(100dvh-48px,100vw-150px))] relative max-md:flex-grow"
+    class="w-full max-md:max-w-[65dvh] md:w-[150px] md:h-[calc(min(100dvh-48px,100vw-150px))] relative max-md:flex-grow-[4]"
   >
     <ani-character-preview
       class="absolute w-full max-h-full overflow-auto md:h-full"
@@ -39,6 +45,17 @@
     class="flex flex-col items-center justify-center h-40 font-bold border-2 border-gray-900 rounded-md w-80 bg-amber-300"
   >
     {{ battleResult | uppercase }}
-    <button class="p-1 mt-1 border-2 border-gray-900 rounded-md bg-amber-100 hoverable:hover:bg-amber-50" (click)="battleResult === 'Victory!!!!!!' ? onNextLevelClick() : onRestart()">{{ battleResult === 'Victory!!!!!!' ? 'Next Level' : 'Restart' | uppercase }}</button>
+    <button
+      class="p-1 mt-1 border-2 border-gray-900 rounded-md bg-amber-100 hoverable:hover:bg-amber-50"
+      (click)="
+        battleResult === 'Victory!!!!!!' ? onNextLevelClick() : onRestart()
+      "
+    >
+      {{
+        battleResult === "Victory!!!!!!"
+          ? "Next Level"
+          : ("Restart" | uppercase)
+      }}
+    </button>
   </div>
 </div>

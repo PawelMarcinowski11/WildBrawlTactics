@@ -7,7 +7,6 @@ import { GameStateService } from '../../services/game-state.service';
 @Component({
   selector: 'ani-map',
   templateUrl: './map.component.html',
-  styles: [],
   animations: [
     trigger('EnterAndLeave', [
       transition(':enter', [
