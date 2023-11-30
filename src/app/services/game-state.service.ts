@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ActionTarget, ActionType } from '../enums';
+import { ActionTarget, ActionType, PlayerType } from '../enums';
 import { StatusKeys } from '../enums/status-keys';
 import { ICharacter, ICharacterAction, ILevel } from '../interfaces';
 import { Defender } from '../statuses';
@@ -24,6 +24,7 @@ export class GameStateService {
   public participatingCharacters$ = new BehaviorSubject<ICharacter[]>([
     ...this.gameState,
   ]);
+  public selectableCharacters$ = new BehaviorSubject<ICharacter[]>([]);
   public selectedAction$ = new BehaviorSubject<ICharacterAction | null>(null);
   public selectedCharacter$ = new BehaviorSubject<ICharacter | null>(null);
 
@@ -77,6 +78,26 @@ export class GameStateService {
 
   public onActionSelect(selectedAction: ICharacterAction | null): void {
     this.currentlySelectedAction = selectedAction;
+
+    if (
+      this.currentlySelectedAction &&
+      this.currentlySelectedCharacter?.player === PlayerType.HUMAN
+    ) {
+      if (this.currentlySelectedAction.target === ActionTarget.ENEMY) {
+        this.selectableCharacters$.next(
+          this.getAvailableEnemies(this.currentlySelectedCharacter),
+        );
+      } else if (this.currentlySelectedAction.target === ActionTarget.ALLY) {
+        this.selectableCharacters$.next(
+          this._currentLevel.characters.filter(
+            (character) =>
+              character.team === this.currentlySelectedCharacter!.team,
+          ),
+        );
+      } else if (this.currentlySelectedAction.target === ActionTarget.SELF) {
+        this.selectableCharacters$.next([this.currentlySelectedCharacter]);
+      }
+    }
   }
 
   public onDeselect(): void {
@@ -85,14 +106,7 @@ export class GameStateService {
 
   public onSelect(targetCharacter: ICharacter): void {
     if (this.currentlySelectedAction && this.currentlySelectedCharacter) {
-      if (
-        (this.currentlySelectedAction.target === ActionTarget.ENEMY &&
-          this.currentlySelectedCharacter.team !== targetCharacter.team) ||
-        (this.currentlySelectedAction.target === ActionTarget.ALLY &&
-          this.currentlySelectedCharacter.team === targetCharacter.team) ||
-        (this.currentlySelectedAction.target === ActionTarget.SELF &&
-          this.currentlySelectedCharacter.id === targetCharacter.id)
-      ) {
+      if (this.selectableCharacters$.getValue().includes(targetCharacter)) {
         this.resolveAction(
           this.currentlySelectedCharacter,
           targetCharacter,
@@ -111,6 +125,10 @@ export class GameStateService {
   }
 
   private chooseTarget(attacker: ICharacter): ICharacter {
+    return this.getAvailableEnemies(attacker)?.shuffle()[0];
+  }
+
+  private getAvailableEnemies(attacker: ICharacter): ICharacter[] {
     const enemyCharacters = this._currentLevel.characters.filter(
       (character) => character.team !== attacker.team,
     );
@@ -122,8 +140,7 @@ export class GameStateService {
     const availableTargets = enemyDefenders.length
       ? enemyDefenders
       : enemyCharacters;
-
-    return availableTargets?.shuffle()[0];
+    return availableTargets;
   }
 
   private async handleAiMovement(): Promise<void> {

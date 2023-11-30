@@ -19,6 +19,7 @@ export class CharacterComponent {
   @ViewChild('container') myContainer!: ElementRef;
 
   public _calculatedFontSize = 4;
+  public availableTargets!: ICharacter[];
   public linearGradient = false;
   public resizeObserver!: ResizeObserver;
   public selectedAction!: ICharacterAction | null;
@@ -34,6 +35,9 @@ export class CharacterComponent {
     );
     this._gameStateService.selectedCharacter$.subscribe(
       (newSelected) => (this.selectedCharacter = newSelected),
+    );
+    this._gameStateService.selectableCharacters$.subscribe(
+      (availableTargets) => (this.availableTargets = availableTargets),
     );
   }
 
@@ -60,16 +64,15 @@ export class CharacterComponent {
   public isEnemy(): boolean {
     return (
       this.selectedAction?.target === ActionTarget.ENEMY &&
-      this.selectedCharacter?.team !== this.parameters.team
+      this.availableTargets.includes(this.parameters)
     );
   }
 
   public isFriendly(): boolean {
     return (
-      (this.selectedAction?.target === ActionTarget.ALLY &&
-        this.selectedCharacter?.team === this.parameters.team) ||
-      (this.selectedAction?.target === ActionTarget.SELF &&
-        this.selectedCharacter?.id === this.parameters.id)
+      (this.selectedAction?.target === ActionTarget.ALLY ||
+        this.selectedAction?.target === ActionTarget.SELF) &&
+      this.availableTargets.includes(this.parameters)
     );
   }
 

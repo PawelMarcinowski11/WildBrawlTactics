@@ -56,8 +56,8 @@ export class PlayerCharactersService {
         {
           name: 'Stab',
           type: ActionType.DAMAGE,
-          amount: 3,
-          amountGrowth: 2,
+          amount: 2,
+          amountGrowth: 1,
           timesUpgraded: 0,
           target: ActionTarget.ENEMY,
         },
