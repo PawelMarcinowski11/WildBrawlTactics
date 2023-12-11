@@ -1,5 +1,9 @@
 <div class="w-full h-full text-gray-900 rounded-br-md max-md:rounded-bl-md">
-  <div *ngIf="selectedCharacter" class="sticky top-0 font-bold">
+  <div
+    *ngIf="selectedCharacter"
+    class="sticky top-0 font-bold"
+    (click)="$event.stopPropagation()"
+  >
     <div class="p-1 pt-0">
       <div class="p-1 border-2 border-gray-900 rounded-md bg-fuchsia-100">
         HP: {{ selectedCharacter.hp }} / {{ selectedCharacter.maxHp }}
@@ -9,14 +13,19 @@
   <div
     *ngIf="selectedCharacter && !isPlayerCharacter()"
     class="sticky top-0 font-bold"
+    (click)="$event.stopPropagation()"
   >
     <div class="p-1 pt-0">
       <div class="p-1 bg-red-400 border-2 border-gray-900 rounded-md">
-        This is enemy character
+        This is an enemy character
       </div>
     </div>
   </div>
-  <div *ngFor="let status of selectedCharacter?.statuses" class="font-bold">
+  <div
+    *ngFor="let status of selectedCharacter?.statuses"
+    class="font-bold"
+    (click)="$event.stopPropagation()"
+  >
     <div class="p-1 pt-0">
       <div class="p-1 bg-violet-400 border-2 border-gray-900 rounded-md">
         <span
@@ -32,7 +41,10 @@
       </div>
     </div>
   </div>
-  <div class="grid grid-cols-2 md:grid-cols-1">
+  <div
+    class="grid grid-cols-2 md:grid-cols-1"
+    (click)="$event.stopPropagation()"
+  >
     <div
       *ngFor="
         let action of selectedCharacter?.actions;
@@ -51,7 +63,7 @@
           ? 'bg-amber-100 active:bg-amber-200 hoverable:hover:bg-amber-50 cursor-pointer'
           : 'text-gray-400 bg-fuchsia-100'
       }}"
-      (click)="$event.stopPropagation(); onActionSelect(action)"
+      (click)="onActionSelect(action)"
     >
       <span class="font-bold text-center">
         {{ action.name | uppercase }}
@@ -67,6 +79,7 @@
   <div
     *ngIf="!selectedCharacter"
     class="min-h-[3rem] flex-grow flex flex-col justify-center text-center m-1 p-1 mt-0 rounded-md bg-fuchsia-100 border-2 border-gray-900"
+    (click)="$event.stopPropagation()"
   >
     Select a character to see their available moves
   </div>

@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ActionTarget, ActionType, PlayerType } from '../enums';
 import { ICharacter } from '../interfaces';
 import { Spiky } from '../statuses';
+import { SavesService } from './saves.service';
 
 @Injectable({
   providedIn: 'root',
@@ -112,7 +113,7 @@ export class PlayerCharactersService {
     },
   ];
 
-  constructor() {}
+  constructor(private readonly _saveService: SavesService) {}
 
   public getPlayerCharacters(): ICharacter[] {
     return this._playerCharacters;

@@ -6,6 +6,7 @@ import { ICharacter, ICharacterAction, ILevel } from '../interfaces';
 import { Defender } from '../statuses';
 import { sleep } from '../utils';
 import { LevelsService } from './levels.service';
+import { SavesService } from './saves.service';
 
 @Injectable({
   providedIn: 'root',
@@ -28,20 +29,10 @@ export class GameStateService {
   public selectedAction$ = new BehaviorSubject<ICharacterAction | null>(null);
   public selectedCharacter$ = new BehaviorSubject<ICharacter | null>(null);
 
-  constructor(private readonly _levelsService: LevelsService) {
-    this._currentLevel = this._levelsService.generateLevel(
-      this.currentLevelNumber,
-    );
-    this.participatingCharacters$.next([...this.gameState]);
-  }
-
-  public get currentLevelNumber() {
-    return this._currentLevelNumber;
-  }
-
-  public set currentLevelNumber(value) {
-    this._currentLevelNumber = value;
-  }
+  constructor(
+    private readonly _levelsService: LevelsService,
+    private readonly _savesService: SavesService,
+  ) {}
 
   public get gameState() {
     return [...this._currentLevel.characters];
@@ -70,8 +61,22 @@ export class GameStateService {
     }
   }
 
+  public initializeGame(): void {
+    const savedLevel = this._savesService.retrieveLevelNumber();
+
+    if (savedLevel) {
+      this._currentLevelNumber = savedLevel;
+    } else {
+      this._currentLevelNumber = 1;
+      this._savesService.saveLevelNumber(1);
+    }
+
+    this.initializeLevel();
+  }
+
   public nextLevel(): void {
-    this.currentLevelNumber += 1;
+    this._currentLevelNumber += 1;
+    this._savesService.saveLevelNumber(this._currentLevelNumber);
 
     this.initializeLevel();
   }
@@ -175,7 +180,7 @@ export class GameStateService {
 
   private initializeLevel(): void {
     this._currentLevel = this._levelsService.generateLevel(
-      this.currentLevelNumber,
+      this._currentLevelNumber,
     );
 
     this._currentLevel.characters.forEach((character) => {
@@ -194,6 +199,11 @@ export class GameStateService {
     this.participatingCharacters$.next([...this.gameState]);
 
     this._roundNumber = 1;
+
+    this.gameEvents$.next({
+      type: 'battleStart',
+      levelNumber: this._currentLevelNumber,
+    });
 
     this.gameEvents$.next({
       type: 'roundStart',

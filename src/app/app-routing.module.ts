@@ -1,12 +1,24 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LayoutComponent } from './components/layout/layout.component';
+import { GameComponent } from './components/game/game.component';
+import { NewGameComponent } from './components/new-game/new-game.component';
 
 const routes: Routes = [
   {
     title: 'Animal Planet',
+    path: 'home',
+    component: NewGameComponent,
+  },
+  {
+    title: 'Animal Planet',
+    path: 'game/:saveId',
+    component: GameComponent,
+  },
+  {
+    title: 'Animal Planet',
     path: '',
-    component: LayoutComponent,
+    redirectTo: 'home',
+    pathMatch: 'full',
   },
 ];
 
