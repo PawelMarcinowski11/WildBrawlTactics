@@ -1,12 +1,14 @@
 import { animate, style, transition, trigger } from '@angular/animations';
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { Component } from '@angular/core';
 import { filter } from 'rxjs';
 import { ICharacter } from 'src/app/interfaces/icharacter';
 import { GameStateService } from '../../services/game-state.service';
+import { ActivatedRoute } from '@angular/router';
+import { SavesService } from 'src/app/services/saves.service';
 
 @Component({
-  selector: 'ani-map',
-  templateUrl: './map.component.html',
+  selector: 'ani-game',
+  templateUrl: './game.component.html',
   animations: [
     trigger('EnterAndLeave', [
       transition(':enter', [
@@ -19,14 +21,16 @@ import { GameStateService } from '../../services/game-state.service';
     ]),
   ],
 })
-export class MapComponent {
+export class GameComponent {
   public battleResult?: 'Victory!!!!!!' | 'Defeat';
+  public levelNumber = 1;
   public participatingCharacters: ICharacter[] = [];
   public roundNumber = 1;
 
   constructor(
-    private _cdr: ChangeDetectorRef,
-    private _gameStateService: GameStateService,
+    private readonly _activatedRoute: ActivatedRoute,
+    private readonly _savesService: SavesService,
+    private readonly _gameStateService: GameStateService,
   ) {
     this._gameStateService.participatingCharacters$.subscribe(
       (participatingCharacters) => {
@@ -41,10 +45,24 @@ export class MapComponent {
       });
 
     this._gameStateService.gameEvents$
+      .pipe(filter((event) => event.type === 'battleStart'))
+      .subscribe((event) => {
+        this.levelNumber = event.levelNumber;
+      });
+
+    this._gameStateService.gameEvents$
       .pipe(filter((event) => event.type === 'battleFinished'))
       .subscribe((event) => {
         this.battleResult = event.outcome;
       });
+  }
+
+  public ngOnInit(): void {
+    this._savesService.setSaveId(
+      this._activatedRoute.snapshot.paramMap.get('saveId'),
+    );
+
+    this._gameStateService.initializeGame();
   }
 
   public deselect(): void {

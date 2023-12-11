@@ -1,0 +1,17 @@
+<div class="flex justify-center items-center w-full h-full min-h-screen">
+  <div class="flex flex-col items-center gap-1">
+    <button
+      class="border-2 p-8 w-60 border-gray-900 rounded-md bg-amber-300 hoverable:hover:bg-amber-50"
+      (click)="initalizeNewGame()"
+    >
+      New game
+    </button>
+    <button
+      *ngFor="let game of availableSaves"
+      class="border-2 p-8 w-60 border-gray-900 rounded-md bg-amber-300 hoverable:hover:bg-amber-50"
+      [routerLink]="['/game', game]"
+    >
+      Load save #{{ game }}
+    </button>
+  </div>
+</div>

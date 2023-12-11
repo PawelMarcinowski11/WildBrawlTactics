@@ -3,7 +3,6 @@ import {
   Component,
   ElementRef,
   Input,
-  Renderer2,
   ViewChild,
 } from '@angular/core';
 import { ActionTarget } from 'src/app/enums';
@@ -26,7 +25,6 @@ export class CharacterComponent {
   public selectedCharacter!: ICharacter | null;
 
   constructor(
-    private _renderer: Renderer2,
     private _cdr: ChangeDetectorRef,
     private _gameStateService: GameStateService,
   ) {
