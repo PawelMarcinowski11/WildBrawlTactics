@@ -19,31 +19,21 @@
   </div>
   <div class="w-full h-full animate-bounce">
     <div class="absolute inline-block w-full h-full align-middle">
-      <span
-        translate="no"
-        class="inline-block"
+      <img
         [ngStyle]="{
-          'font-size': calculatedFontSize * 0.75 + 'px',
-          'line-height': calculatedFontSize * 0.75 + 'px',
-          'font-family': 'NotoColorEmoji-Regular',
-          height: calculatedFontSize * 0.75 + 'px',
-          filter: parameters.moved ? 'sepia(1)' : '',
-          'text-shadow':
-            '-1px -1px 0 rgb(17 24 39), 1px -1px 0 rgb(17 24 39), -1px 1px 0 rgb(17 24 39), 1px 1px 0 rgb(17 24 39)'
+          filter:
+            (parameters.moved ? 'sepia(1)' : '') +
+            'drop-shadow(-1px -1px rgb(17 24 39))' +
+            'drop-shadow(1px -1px rgb(17 24 39))' +
+            'drop-shadow(1px 1px rgb(17 24 39))' +
+            'drop-shadow(-1px 1px rgb(17 24 39))'
         }"
-        [innerHTML]="parameters.appearance"
-      >
-      </span>
+        [src]="'assets/svg/' + parameters.appearance + '.svg'"
+      />
     </div>
     <div #overlay class="absolute w-full h-full text-transparent">
-      <span
-        translate="no"
-        class="{{ linearGradient ? 'inline-block' : '' }}"
+      <img
         [ngStyle]="{
-          'font-size': calculatedFontSize * 0.75 + 'px',
-          'line-height': calculatedFontSize * 0.75 + 'px',
-          'font-family': 'NotoColorEmoji-Regular',
-          height: calculatedFontSize * 0.75 + 'px',
           mask:
             (this.linearGradient ? 'linear' : 'conic') +
             '-gradient(white ' +
@@ -54,11 +44,20 @@
             '-gradient(white ' +
             (1 - this.parameters.hp / this.parameters.maxHp) * 100 +
             '%, transparent 0%)',
-          'text-shadow': '0 0 0 rgb(185 28 28)'
+          filter:
+            'brightness(0%)' +
+            'invert(30%)' +
+            'sepia(60%)' +
+            'saturate(5000%)' +
+            'hue-rotate(345deg)' +
+            'brightness(80%)' +
+            'drop-shadow(-1px -1px rgb(17 24 39))' +
+            'drop-shadow(1px -1px rgb(17 24 39))' +
+            'drop-shadow(1px 1px rgb(17 24 39))' +
+            'drop-shadow(-1px 1px rgb(17 24 39))'
         }"
-        [innerHTML]="parameters.appearance"
-      >
-      </span>
+        [src]="'assets/svg/' + parameters.appearance + '.svg'"
+      />
     </div>
   </div>
   <div

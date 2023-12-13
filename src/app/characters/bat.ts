@@ -12,7 +12,7 @@ export class Bat implements ICharacter {
     public hp = 10,
     public maxHp = 10,
     public hpGrowth = 3,
-    public appearance = '🦇',
+    public appearance = 'u1f987',
     public statuses = [],
     public actions = [
       {
