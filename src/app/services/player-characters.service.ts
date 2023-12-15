@@ -18,7 +18,7 @@ export class PlayerCharactersService {
       x: 2,
       y: 4,
       team: 2,
-      appearance: '&#128015;',
+      appearance: 'u1f40f',
       actions: [
         {
           name: 'Kick',
@@ -52,7 +52,7 @@ export class PlayerCharactersService {
       x: 3,
       y: 5,
       team: 2,
-      appearance: '🦔',
+      appearance: 'u1f994',
       actions: [
         {
           name: 'Stab',
@@ -86,7 +86,7 @@ export class PlayerCharactersService {
       x: 4,
       y: 4,
       team: 2,
-      appearance: '&#128029;',
+      appearance: 'u1f41d',
       actions: [
         {
           name: 'Sting',

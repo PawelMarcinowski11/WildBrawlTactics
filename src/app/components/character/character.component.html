@@ -23,10 +23,10 @@
         [ngStyle]="{
           filter:
             (parameters.moved ? 'sepia(1)' : '') +
-            'drop-shadow(-1px -1px rgb(17 24 39))' +
-            'drop-shadow(1px -1px rgb(17 24 39))' +
-            'drop-shadow(1px 1px rgb(17 24 39))' +
-            'drop-shadow(-1px 1px rgb(17 24 39))'
+            'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
+            'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
+            'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
+            'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
         }"
         [src]="'assets/svg/' + parameters.appearance + '.svg'"
       />
@@ -51,10 +51,10 @@
             'saturate(5000%)' +
             'hue-rotate(345deg)' +
             'brightness(80%)' +
-            'drop-shadow(-1px -1px rgb(17 24 39))' +
-            'drop-shadow(1px -1px rgb(17 24 39))' +
-            'drop-shadow(1px 1px rgb(17 24 39))' +
-            'drop-shadow(-1px 1px rgb(17 24 39))'
+            'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
+            'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
+            'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
+            'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
         }"
         [src]="'assets/svg/' + parameters.appearance + '.svg'"
       />
@@ -63,17 +63,19 @@
   <div
     class="absolute flex bottom-[10%] w-full justify-center rounded-md flex-col"
   >
-    <div class="flex gap-1 mb-1">
-      <div
-        *ngFor="let status of parameters.statuses"
-        translate="no"
-        [ngStyle]="{
-          'font-family': 'NotoColorEmoji-Regular',
-          'text-shadow':
-            '-1px -1px 0 rgb(17 24 39), 1px -1px 0 rgb(17 24 39), -1px 1px 0 rgb(17 24 39), 1px 1px 0 rgb(17 24 39)'
-        }"
-        [innerHTML]="status.appearance"
-      ></div>
+    <div class="flex w-full gap-1 mb-1">
+      <div class="w-1/5" *ngFor="let status of parameters.statuses">
+        <img
+          [ngStyle]="{
+            filter:
+              'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
+              'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
+              'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
+              'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
+          }"
+          [src]="'assets/svg/' + status.appearance + '.svg'"
+        />
+      </div>
     </div>
     <div
       class="border-2 px-1 min-w-[65%] text-center whitespace-nowrap overflow-hidden bg-pink-100 border-gray-900 rounded-md"

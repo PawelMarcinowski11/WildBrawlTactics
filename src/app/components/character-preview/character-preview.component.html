@@ -28,15 +28,17 @@
   >
     <div class="p-1 pt-0">
       <div class="p-1 bg-violet-400 border-2 border-gray-900 rounded-md">
-        <span
-          translate="no"
+        <img
+          class="h-[1rem] inline-block align-baseline"
           [ngStyle]="{
-            'font-family': 'NotoColorEmoji-Regular',
-            'text-shadow':
-              '-1px -1px 0 rgb(17 24 39), 1px -1px 0 rgb(17 24 39), -1px 1px 0 rgb(17 24 39), 1px 1px 0 rgb(17 24 39)'
+            filter:
+              'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
+              'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
+              'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
+              'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
           }"
-          [innerHTML]="status.appearance"
-        ></span>
+          [src]="'assets/svg/' + status.appearance + '.svg'"
+        />
         {{ status.description }}
       </div>
     </div>
