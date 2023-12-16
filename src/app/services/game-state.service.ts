@@ -129,6 +129,19 @@ export class GameStateService {
     this.initializeLevel();
   }
 
+  private async animateAction(
+    action: ICharacterAction,
+    source: ICharacter,
+    target: ICharacter,
+  ): Promise<void> {
+    if (action.target !== ActionTarget.SELF) {
+      const [oldX, oldY] = [source.x, source.y];
+      [source.x, source.y] = [target.x, target.y];
+      await sleep(150);
+      [source.x, source.y] = [oldX, oldY];
+    }
+  }
+
   private chooseTarget(attacker: ICharacter): ICharacter {
     return this.getAvailableEnemies(attacker)?.shuffle()[0];
   }
@@ -231,10 +244,7 @@ export class GameStateService {
     action: ICharacterAction,
   ): Promise<void> {
     if (target) {
-      const [oldX, oldY] = [source.x, source.y];
-      [source.x, source.y] = [target.x, target.y];
-
-      await sleep(150);
+      await this.animateAction(action, source, target);
 
       if (action.type === ActionType.DAMAGE) {
         target.hp = target.hp - action.amount;
@@ -259,8 +269,6 @@ export class GameStateService {
       if (action.usesLeft) {
         action.usesLeft -= 1;
       }
-
-      [source.x, source.y] = [oldX, oldY];
 
       source.moved = true;
 
