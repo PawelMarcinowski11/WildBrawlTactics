@@ -26,13 +26,11 @@ import { GameStateService } from '../../services/game-state.service';
   ],
 })
 export class CharacterComponent {
-  @Input() public parameters!: ICharacter;
+  @Input() parameters!: ICharacter;
   @ViewChild('container') myContainer!: ElementRef;
 
-  public _calculatedFontSize = 4;
   public availableTargets!: ICharacter[];
   public linearGradient = false;
-  public resizeObserver!: ResizeObserver;
   public selectedAction!: ICharacterAction | null;
   public selectedCharacter!: ICharacter | null;
 
@@ -51,17 +49,6 @@ export class CharacterComponent {
     );
   }
 
-  public get calculatedFontSize() {
-    return this._calculatedFontSize;
-  }
-
-  public set calculatedFontSize(value: number) {
-    if (this._calculatedFontSize !== value) {
-      this._calculatedFontSize = value;
-      this._cdr.detectChanges();
-    }
-  }
-
   public get gradientMask(): string {
     return (
       (this.linearGradient ? 'linear' : 'conic') +
@@ -69,10 +56,6 @@ export class CharacterComponent {
       (1 - this.parameters.hp / this.parameters.maxHp) * 100 +
       '%, transparent 0%)'
     );
-  }
-
-  public isTargettable(): boolean {
-    return this.availableTargets.includes(this.parameters);
   }
 
   public isFriendly(): boolean {
@@ -87,21 +70,8 @@ export class CharacterComponent {
     return this.selectedCharacter?.id === this.parameters.id;
   }
 
-  public ngAfterViewInit(): void {
-    this.calculatedFontSize = this.myContainer.nativeElement.offsetHeight;
-
-    this.resizeObserver = new ResizeObserver((entries) => {
-      for (const entry of entries) {
-        const newHeight = entry.target.clientHeight;
-        this.calculatedFontSize = newHeight;
-      }
-    });
-
-    this.resizeObserver.observe(this.myContainer.nativeElement);
-  }
-
-  public ngOnDestroy(): void {
-    this.resizeObserver.unobserve(this.myContainer.nativeElement);
+  public isTargettable(): boolean {
+    return this.availableTargets.includes(this.parameters);
   }
 
   public onClick(): void {
