@@ -1,27 +1,16 @@
 # WildBrawlTactics
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.0.4.
+Welcome to the captivating world of "Wild Brawl Tactics", where the
+untamed realms echo with the sounds of nature's fiercest clashes! In this
+thrilling turn-based strategy game, you find yourself at the helm of a
+diverse group of animals, each equipped with unique skills and abilities.
+Your mission: lead your formidable crew into battle against opponents in a
+strategic showdown that will test your tactical prowess. As the commander
+of this extraordinary ensemble, your strategy is paramount. Every move,
+every decision will determine the fate of your pack in the wild.
 
-## Development server
+The gameplay is rooted in a turn-based system, requiring you to carefully
+plan and execute your actions. Each animal in your pack boasts unique
+abilities, ranging from powerful attacks to invaluable support skills.
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
-
-## Code scaffolding
-
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
-
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+##Wild Brawl Tactics is a hobby project attempting to create a simple yet fun singleplayer browser game, while practicing RWD, animations, Angular data flow and more. If you find any bugs or wanted to ask a question, feel free to add an issue or contact me by email at pawel.marcinowski11@gmail.com :)
