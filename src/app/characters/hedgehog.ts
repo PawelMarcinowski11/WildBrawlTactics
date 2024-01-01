@@ -1,29 +1,41 @@
 import { ActionTarget, ActionType, PlayerType } from '../enums';
 import { Team } from '../enums/team';
 import { ICharacter } from '../interfaces';
+import { Spiky } from '../statuses';
 
-export class Bat implements ICharacter {
+export class Hedgehog implements ICharacter {
   constructor(
     public x: number,
     public y: number,
     public timesUpgraded = 0,
-    public player = PlayerType.AI,
-    public team = Team.OPPONENT,
+    public player = PlayerType.HUMAN,
+    public team = Team.PLAYER,
     public moved = false,
     public hp = 10,
     public maxHp = 10,
-    public hpGrowth = 3,
-    public appearance = 'u1f987',
-    public statuses = [],
+    public hpGrowth = 5,
+    public appearance = 'u1f994',
+    public statuses = [new Spiky()],
     public actions = [
       {
-        name: 'Bite',
+        name: 'Stab',
         type: ActionType.DAMAGE,
-        amount: 3,
+        amount: 2,
         amountGrowth: 1,
         appearance: 'u2694',
         timesUpgraded: 0,
         target: ActionTarget.ENEMY,
+      },
+      {
+        name: 'Defensive stance',
+        type: ActionType.DEFEND,
+        amount: 1,
+        amountGrowth: 0,
+        appearance: 'u1f6e1',
+        timesUpgraded: 0,
+        uses: 3,
+        usesLeft: 3,
+        target: ActionTarget.SELF,
       },
     ],
     public id = crypto.randomUUID(),

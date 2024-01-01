@@ -1,0 +1,31 @@
+<div
+  *ngIf="(rewardsWaiting | async)?.[0] as reward"
+  class="fixed top-0 flex items-center justify-center w-screen h-screen"
+>
+  <div
+    *ngIf="reward.type === RewardType.NEW_CHARACTER"
+    class="flex flex-col items-center justify-center p-2 font-bold border-2 border-gray-900 rounded-md bg-amber-300"
+  >
+    {{ "New character joins your team!" | uppercase }}
+    <div class="w-40 h-40 m-1">
+      <img
+        [ngStyle]="{
+          filter:
+            'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
+            'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
+            'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
+            'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
+        }"
+        [src]="
+          'assets/svg/' + getCharacterAppearance(reward.character!) + '.svg'
+        "
+      />
+    </div>
+    <button
+      class="p-1 mt-1 border-2 border-gray-900 rounded-md bg-amber-100 hoverable:hover:bg-amber-50"
+      (click)="takeCharacterReward(reward)"
+    >
+      {{ "Welcome" | uppercase }}
+    </button>
+  </div>
+</div>

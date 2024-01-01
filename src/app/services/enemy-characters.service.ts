@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ICharacter } from '../interfaces';
+import { ICharacter, ILevelPreset } from '../interfaces';
 import { Levels } from '../configs';
 
 @Injectable({
@@ -9,8 +9,9 @@ export class EnemyCharactersService {
   constructor() {}
 
   public getEnemyCharacters(levelNumber: number): ICharacter[] {
-    const powerLevel = Math.floor(levelNumber / 20);
-    const chosenPreset = Levels.levelPresets[(levelNumber - 1) % 20];
+    const powerLevel: number = Math.floor(levelNumber / 20);
+    const chosenPreset: ILevelPreset =
+      Levels.levelPresets[(levelNumber - 1) % 20];
     const enemyCharacters: ICharacter[] = [];
 
     chosenPreset.enemies.forEach((Enemy, index) => {
@@ -18,6 +19,7 @@ export class EnemyCharactersService {
         new Enemy(...chosenPreset.layout[index], powerLevel),
       );
     });
+
     return enemyCharacters;
   }
 }

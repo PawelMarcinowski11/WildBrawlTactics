@@ -1,121 +1,45 @@
-import { Injectable } from '@angular/core';
-import { ActionTarget, ActionType, PlayerType } from '../enums';
+import { Injectable, Type } from '@angular/core';
+import { Bee, Ram } from '../characters';
+import { PlayerType } from '../enums';
 import { ICharacter } from '../interfaces';
-import { Spiky } from '../statuses';
 import { SavesService } from './saves.service';
+import { Team } from '../enums/team';
 
 @Injectable({
   providedIn: 'root',
 })
 export class PlayerCharactersService {
-  private _playerCharacters: ICharacter[] = [
-    {
-      id: crypto.randomUUID(),
-      hp: 10,
-      maxHp: 10,
-      hpGrowth: 5,
-      timesUpgraded: 0,
-      x: 2,
-      y: 4,
-      team: 2,
-      appearance: 'u1f40f',
-      actions: [
-        {
-          name: 'Kick',
-          type: ActionType.DAMAGE,
-          amount: 3,
-          amountGrowth: 2,
-          timesUpgraded: 0,
-          target: ActionTarget.ENEMY,
-        },
-        {
-          name: 'Ram',
-          type: ActionType.DAMAGE,
-          amount: 10,
-          amountGrowth: 5,
-          timesUpgraded: 0,
-          uses: 1,
-          usesLeft: 1,
-          target: ActionTarget.ENEMY,
-        },
-      ],
-      moved: false,
-      player: PlayerType.HUMAN,
-      statuses: [],
-    },
-    {
-      id: crypto.randomUUID(),
-      hp: 10,
-      maxHp: 10,
-      hpGrowth: 5,
-      timesUpgraded: 0,
-      x: 3,
-      y: 5,
-      team: 2,
-      appearance: 'u1f994',
-      actions: [
-        {
-          name: 'Stab',
-          type: ActionType.DAMAGE,
-          amount: 2,
-          amountGrowth: 1,
-          timesUpgraded: 0,
-          target: ActionTarget.ENEMY,
-        },
-        {
-          name: 'Defensive stance',
-          type: ActionType.DEFEND,
-          amount: 1,
-          amountGrowth: 0,
-          timesUpgraded: 0,
-          uses: 3,
-          usesLeft: 3,
-          target: ActionTarget.SELF,
-        },
-      ],
-      moved: false,
-      player: PlayerType.HUMAN,
-      statuses: [new Spiky()],
-    },
-    {
-      id: crypto.randomUUID(),
-      hp: 10,
-      maxHp: 10,
-      hpGrowth: 3,
-      timesUpgraded: 0,
-      x: 4,
-      y: 4,
-      team: 2,
-      appearance: 'u1f41d',
-      actions: [
-        {
-          name: 'Sting',
-          type: ActionType.DAMAGE,
-          amount: 3,
-          amountGrowth: 2,
-          timesUpgraded: 0,
-          target: ActionTarget.ENEMY,
-        },
-        {
-          name: 'Heal',
-          type: ActionType.HEAL,
-          amount: 10,
-          amountGrowth: 5,
-          timesUpgraded: 0,
-          uses: 4,
-          usesLeft: 4,
-          target: ActionTarget.ALLY,
-        },
-      ],
-      moved: false,
-      player: PlayerType.HUMAN,
-      statuses: [],
-    },
+  private readonly _defaultCharacters: ICharacter[] = [
+    new Ram(2, 4),
+    new Bee(4, 4),
   ];
 
-  constructor(private readonly _saveService: SavesService) {}
+  private _playerCharacters: ICharacter[] = [];
+
+  constructor(private readonly _savesService: SavesService) {}
+
+  public addPlayerCharacters(
+    Character: Type<ICharacter>,
+    coords: [x: number, y: number],
+  ): void {
+    this._playerCharacters.push(
+      new Character(coords[0], coords[1], 0, PlayerType.HUMAN, Team.PLAYER),
+    );
+
+    this._savesService.savePlayerCharacters(this._playerCharacters);
+  }
 
   public getPlayerCharacters(): ICharacter[] {
     return this._playerCharacters;
+  }
+
+  public loadPlayerCharacters(): void {
+    const loadedCharacters = this._savesService.retrievePlayerCharacters();
+
+    if (loadedCharacters.length) {
+      this._playerCharacters = loadedCharacters;
+    } else {
+      this._playerCharacters = this._defaultCharacters;
+    }
   }
 }

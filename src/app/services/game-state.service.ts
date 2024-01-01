@@ -2,10 +2,16 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import { ActionTarget, ActionType, PlayerType } from '../enums';
 import { StatusKeys } from '../enums/status-keys';
-import { ICharacter, ICharacterAction, ILevel } from '../interfaces';
+import {
+  ICharacter,
+  ICharacterAction,
+  IGameEvent,
+  ILevel,
+} from '../interfaces';
 import { Defender } from '../statuses';
 import { sleep } from '../utils';
 import { LevelsService } from './levels.service';
+import { PlayerCharactersService } from './player-characters.service';
 import { SavesService } from './saves.service';
 
 @Injectable({
@@ -18,9 +24,9 @@ export class GameStateService {
   private _currentlySelectedCharacter: ICharacter | null = null;
   private _roundNumber = 1;
 
-  public gameEvents$ = new BehaviorSubject<any>({
+  public gameEvents$ = new BehaviorSubject<IGameEvent>({
     type: 'roundStart',
-    roundNumber: 1,
+    data: { roundNumber: 1 },
   });
   public participatingCharacters$ = new BehaviorSubject<ICharacter[]>([
     ...this.gameState,
@@ -32,6 +38,7 @@ export class GameStateService {
   constructor(
     private readonly _levelsService: LevelsService,
     private readonly _savesService: SavesService,
+    private readonly _playerCharactersService: PlayerCharactersService,
   ) {}
 
   public get gameState() {
@@ -70,6 +77,13 @@ export class GameStateService {
       this._currentLevelNumber = 1;
       this._savesService.saveLevelNumber(1);
     }
+
+    this.gameEvents$.next({
+      type: 'gameStart',
+      data: {},
+    });
+
+    this._playerCharactersService.loadPlayerCharacters();
 
     this.initializeLevel();
   }
@@ -186,7 +200,7 @@ export class GameStateService {
       this._roundNumber += 1;
       this.gameEvents$.next({
         type: 'roundStart',
-        roundNumber: this._roundNumber,
+        data: { roundNumber: this._roundNumber },
       });
     }
   }
@@ -215,26 +229,26 @@ export class GameStateService {
 
     this.gameEvents$.next({
       type: 'battleStart',
-      levelNumber: this._currentLevelNumber,
+      data: { levelNumber: this._currentLevelNumber },
     });
 
     this.gameEvents$.next({
       type: 'roundStart',
-      roundNumber: this._roundNumber,
+      data: { roundNumber: this._roundNumber },
     });
   }
 
   private onDefeat(): void {
     this.gameEvents$.next({
       type: 'battleFinished',
-      outcome: 'Defeat',
+      data: { outcome: 'Defeat' },
     });
   }
 
   private onVictory(): void {
     this.gameEvents$.next({
       type: 'battleFinished',
-      outcome: 'Victory!!!!!!',
+      data: { outcome: 'Victory' },
     });
   }
 

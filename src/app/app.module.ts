@@ -9,6 +9,7 @@ import { CharacterPreviewComponent } from './components/character-preview/charac
 import { CharacterComponent } from './components/character/character.component';
 import { GameComponent } from './components/game/game.component';
 import { NewGameComponent } from './components/new-game/new-game.component';
+import { RewardBoxComponent } from './components/reward-box/reward-box.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { NewGameComponent } from './components/new-game/new-game.component';
     CharacterPreviewComponent,
     BackgroundComponent,
     NewGameComponent,
+    RewardBoxComponent,
   ],
   imports: [BrowserModule, BrowserAnimationsModule, AppRoutingModule],
   providers: [],

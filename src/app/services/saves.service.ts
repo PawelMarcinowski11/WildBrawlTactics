@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ICharacter } from '../interfaces';
+import { ICharacter, IReward } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -8,12 +8,6 @@ export class SavesService {
   private _saveId: string | null = null;
 
   constructor() {}
-
-  public retrieveAvailableSaves(): number[] {
-    const saves = localStorage.getItem('saves');
-
-    return saves ? JSON.parse(saves) : [];
-  }
 
   public addNewSave(saveId: number): void {
     const saves = localStorage.getItem('saves');
@@ -24,6 +18,12 @@ export class SavesService {
     }
 
     localStorage.setItem('saves', JSON.stringify(parsedSaves));
+  }
+
+  public retrieveAvailableSaves(): number[] {
+    const saves = localStorage.getItem('saves');
+
+    return saves ? JSON.parse(saves) : [];
   }
 
   public retrieveLevelNumber(): number | null {
@@ -38,9 +38,18 @@ export class SavesService {
   public retrievePlayerCharacters(): ICharacter[] {
     if (this._saveId) {
       const characters = localStorage.getItem(
-        `game_${this._saveId}_levelNumber`,
+        `game_${this._saveId}_playerCharacters`,
       );
       return characters ? JSON.parse(characters) : [];
+    } else {
+      return [];
+    }
+  }
+
+  public retrievePlayerRewards(): IReward[] {
+    if (this._saveId) {
+      const rewards = localStorage.getItem(`game_${this._saveId}_rewards`);
+      return rewards ? JSON.parse(rewards) : [];
     } else {
       return [];
     }
@@ -60,6 +69,15 @@ export class SavesService {
       localStorage.setItem(
         `game_${this._saveId}_playerCharacters`,
         JSON.stringify(characters),
+      );
+    }
+  }
+
+  public savePlayerRewards(rewards: IReward[]): void {
+    if (this._saveId) {
+      localStorage.setItem(
+        `game_${this._saveId}_rewards`,
+        JSON.stringify(rewards),
       );
     }
   }

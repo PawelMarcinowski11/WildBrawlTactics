@@ -22,6 +22,17 @@
     </div>
   </div>
   <div
+    *ngIf="selectedCharacter?.moved"
+    class="sticky top-0 font-bold"
+    (click)="$event.stopPropagation()"
+  >
+    <div class="p-1 pt-0">
+      <div class="p-1 bg-blue-100 border-2 border-gray-900 rounded-md">
+        This character already moved
+      </div>
+    </div>
+  </div>
+  <div
     *ngFor="let status of selectedCharacter?.statuses"
     class="font-bold"
     (click)="$event.stopPropagation()"

@@ -1,17 +1,117 @@
-<div class="flex justify-center items-center w-full h-full min-h-screen">
-  <div class="flex flex-col items-center gap-1">
-    <button
-      class="border-2 p-8 w-60 border-gray-900 rounded-md bg-amber-300 hoverable:hover:bg-amber-50"
-      (click)="initalizeNewGame()"
+<div class="relative flex justify-center w-full h-screen">
+  <div class="flex flex-col gap-1 justify-center h-screen">
+    <h1
+      class="font-bold text-[calc(min(60px,9vw))] uppercase py-4 text-red-300"
+      style="-webkit-text-stroke: 2px #000; text-stroke: 2px #000"
     >
-      New game
+      Wild Brawl Tactics
+    </h1>
+    <div class="flex flex-col gap-1 mx-auto">
+      <button
+        class="border-2 h-12 w-60 border-gray-900 rounded-md bg-blue-100 hoverable:hover:bg-amber-50"
+        (click)="tutorialModal = true"
+      >
+        How to play?
+      </button>
+      <button
+        class="flex justify-evenly items-center border-2 h-24 w-60 center border-gray-900 rounded-md bg-green-300 hoverable:hover:bg-amber-50"
+        (click)="initalizeNewGame()"
+      >
+        <div class="inline-block w-12 mt-3 animate-bounce">
+          <img
+            [ngStyle]="{
+              filter:
+                'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
+                'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
+                'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
+                'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
+            }"
+            [src]="'assets/svg/u2694.svg'"
+          />
+        </div>
+        <span>New game</span>
+        <div class="inline-block w-12 mt-3 animate-bounce">
+          <img
+            [ngStyle]="{
+              filter:
+                'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
+                'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
+                'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
+                'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
+            }"
+            [src]="'assets/svg/u2694.svg'"
+          />
+        </div>
+      </button>
+    </div>
+    <div class="flex flex-col gap-1 mx-auto overflow-y-auto">
+      <button
+        *ngFor="let game of availableSaves"
+        class="border-2 min-h-[48px] h-24 w-60 border-gray-900 rounded-md bg-amber-300 hoverable:hover:bg-amber-50"
+        [routerLink]="['/game', game]"
+      >
+        Load save #{{ game }}
+      </button>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="introductionModal"
+  class="fixed top-0 flex justify-center w-screen h-screen overflow-scroll"
+>
+  <div
+    class="my-auto max-w-sm gap-4 flex flex-col items-center justify-center text-justify font-bold p-2 border-2 border-gray-900 rounded-md bg-amber-300"
+  >
+    <p>
+      Welcome to the captivating world of "Wild Brawl Tactics", where the
+      untamed realms echo with the sounds of nature's fiercest clashes! In this
+      thrilling turn-based strategy game, you find yourself at the helm of a
+      diverse group of animals, each equipped with unique skills and abilities.
+      Your mission: lead your formidable crew into battle against opponents in a
+      strategic showdown that will test your tactical prowess. As the commander
+      of this extraordinary ensemble, your strategy is paramount. Every move,
+      every decision will determine the fate of your pack in the wild.
+    </p>
+    <p>
+      The gameplay is rooted in a turn-based system, requiring you to carefully
+      plan and execute your actions. Each animal in your pack boasts unique
+      abilities, ranging from powerful attacks to invaluable support skills.
+    </p>
+    <button
+      class="p-1 border-2 border-gray-900 rounded-md bg-amber-100 hoverable:hover:bg-amber-50 sticky bottom-2.5"
+      (click)="tutorialModal = true; introductionModal = false"
+    >
+      {{ "How do I play?" | uppercase }}
     </button>
+  </div>
+</div>
+<div
+  *ngIf="tutorialModal"
+  class="fixed top-0 flex justify-center w-screen h-screen overflow-scroll"
+>
+  <div
+    class="my-auto max-w-sm gap-4 flex flex-col items-center justify-center text-justify font-bold p-2 border-2 border-gray-900 rounded-md bg-amber-300"
+  >
+    <p>
+      Initiate a turn by selecting a character and exploring their diverse skill
+      set. Will you unleash a devastating attack, provide crucial support, or
+      perhaps employ healing abilities to mend your pack's wounds? Once the
+      action is chosen, designate a target within the battle arena. Smart
+      decision-making is key, as you aim to outwit your opponents with
+      well-timed moves and efficient use of your pack's skills.
+    </p>
+    <p>
+      Be attentive to your pack's health and energy levels, ensuring they endure
+      the challenges of each encounter. As you progress through the wild
+      landscapes, unlock new characters with distinct abilities, and discover
+      synergies within your pack. Experiment with different combinations to
+      create a formidable team capable of overcoming any adversary!
+    </p>
     <button
-      *ngFor="let game of availableSaves"
-      class="border-2 p-8 w-60 border-gray-900 rounded-md bg-amber-300 hoverable:hover:bg-amber-50"
-      [routerLink]="['/game', game]"
+      class="p-1 border-2 border-gray-900 rounded-md bg-amber-100 hoverable:hover:bg-amber-50 sticky bottom-2.5"
+      (click)="tutorialModal = false"
     >
-      Load save #{{ game }}
+      {{ "Let's go" | uppercase }}
     </button>
   </div>
 </div>

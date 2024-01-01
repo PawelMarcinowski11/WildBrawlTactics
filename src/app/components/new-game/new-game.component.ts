@@ -8,6 +8,8 @@ import { SavesService } from '../../services/saves.service';
 })
 export class NewGameComponent implements OnInit {
   public availableSaves: number[] = [];
+  public introductionModal = true;
+  public tutorialModal = false;
 
   constructor(
     private readonly _router: Router,
@@ -16,6 +18,10 @@ export class NewGameComponent implements OnInit {
 
   public ngOnInit(): void {
     this.availableSaves = this._savesService.retrieveAvailableSaves();
+
+    if (this.availableSaves.length) {
+      this.introductionModal = false;
+    }
   }
 
   public initalizeNewGame(): void {

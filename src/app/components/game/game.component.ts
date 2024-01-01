@@ -1,10 +1,10 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { filter } from 'rxjs';
 import { ICharacter } from 'src/app/interfaces/icharacter';
-import { GameStateService } from '../../services/game-state.service';
-import { ActivatedRoute } from '@angular/router';
 import { SavesService } from 'src/app/services/saves.service';
+import { GameStateService } from '../../services/game-state.service';
 
 @Component({
   selector: 'ani-game',
@@ -22,7 +22,7 @@ import { SavesService } from 'src/app/services/saves.service';
   ],
 })
 export class GameComponent {
-  public battleResult?: 'Victory!!!!!!' | 'Defeat';
+  public battleResult?: 'Victory' | 'Defeat';
   public levelNumber = 1;
   public participatingCharacters: ICharacter[] = [];
   public roundNumber = 1;
@@ -41,20 +41,24 @@ export class GameComponent {
     this._gameStateService.gameEvents$
       .pipe(filter((event) => event.type === 'roundStart'))
       .subscribe((event) => {
-        this.roundNumber = event.roundNumber;
+        this.roundNumber = event.data['roundNumber'];
       });
 
     this._gameStateService.gameEvents$
       .pipe(filter((event) => event.type === 'battleStart'))
       .subscribe((event) => {
-        this.levelNumber = event.levelNumber;
+        this.levelNumber = event.data['levelNumber'];
       });
 
     this._gameStateService.gameEvents$
       .pipe(filter((event) => event.type === 'battleFinished'))
       .subscribe((event) => {
-        this.battleResult = event.outcome;
+        this.battleResult = event.data['outcome'];
       });
+  }
+
+  public deselect(): void {
+    this._gameStateService.onDeselect();
   }
 
   public ngOnInit(): void {
@@ -63,10 +67,6 @@ export class GameComponent {
     );
 
     this._gameStateService.initializeGame();
-  }
-
-  public deselect(): void {
-    this._gameStateService.onDeselect();
   }
 
   public onNextLevelClick(): void {

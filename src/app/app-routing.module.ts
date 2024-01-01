@@ -16,6 +16,12 @@ const routes: Routes = [
   },
   {
     title: 'Animal Planet',
+    path: 'game',
+    redirectTo: 'home',
+    pathMatch: 'full',
+  },
+  {
+    title: 'Animal Planet',
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',

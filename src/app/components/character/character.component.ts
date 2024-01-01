@@ -1,3 +1,4 @@
+import { animate, style, transition, trigger } from '@angular/animations';
 import {
   ChangeDetectorRef,
   Component,
@@ -12,6 +13,17 @@ import { GameStateService } from '../../services/game-state.service';
 @Component({
   selector: 'ani-character',
   templateUrl: './character.component.html',
+  animations: [
+    trigger('IconEnterAndLeave', [
+      transition(':enter', [
+        style({ transform: 'scale(0)' }),
+        animate('125ms ease-in', style({ transform: 'scale(1)' })),
+      ]),
+      transition(':leave', [
+        animate('125ms', style({ transform: 'scale(0)' })),
+      ]),
+    ]),
+  ],
 })
 export class CharacterComponent {
   @Input() public parameters!: ICharacter;
@@ -59,11 +71,8 @@ export class CharacterComponent {
     );
   }
 
-  public isEnemy(): boolean {
-    return (
-      this.selectedAction?.target === ActionTarget.ENEMY &&
-      this.availableTargets.includes(this.parameters)
-    );
+  public isTargettable(): boolean {
+    return this.availableTargets.includes(this.parameters);
   }
 
   public isFriendly(): boolean {
@@ -75,10 +84,7 @@ export class CharacterComponent {
   }
 
   public isSelected(): boolean {
-    return (
-      this.selectedAction?.target !== ActionTarget.SELF &&
-      this.selectedCharacter?.id === this.parameters.id
-    );
+    return this.selectedCharacter?.id === this.parameters.id;
   }
 
   public ngAfterViewInit(): void {

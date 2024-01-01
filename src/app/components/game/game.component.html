@@ -48,15 +48,10 @@
     {{ battleResult | uppercase }}
     <button
       class="p-1 mt-1 border-2 border-gray-900 rounded-md bg-amber-100 hoverable:hover:bg-amber-50"
-      (click)="
-        battleResult === 'Victory!!!!!!' ? onNextLevelClick() : onRestart()
-      "
+      (click)="battleResult === 'Victory' ? onNextLevelClick() : onRestart()"
     >
-      {{
-        battleResult === "Victory!!!!!!"
-          ? "Next Level"
-          : ("Restart" | uppercase)
-      }}
+      {{ battleResult === "Victory" ? "Next Level" : ("Restart" | uppercase) }}
     </button>
   </div>
 </div>
+<ani-reward-box></ani-reward-box>
