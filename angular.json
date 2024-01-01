@@ -6,7 +6,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "AnimalPlanet": {
+    "WildBrawlTactics": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -92,10 +92,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "AnimalPlanet:build:production"
+              "browserTarget": "WildBrawlTactics:build:production"
             },
             "development": {
-              "browserTarget": "AnimalPlanet:build:development"
+              "browserTarget": "WildBrawlTactics:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -103,7 +103,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "AnimalPlanet:build"
+            "browserTarget": "WildBrawlTactics:build"
           }
         },
         "test": {

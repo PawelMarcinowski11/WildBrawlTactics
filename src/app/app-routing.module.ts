@@ -5,23 +5,23 @@ import { NewGameComponent } from './components/new-game/new-game.component';
 
 const routes: Routes = [
   {
-    title: 'Animal Planet',
+    title: 'Wild Brawl Tactics',
     path: 'home',
     component: NewGameComponent,
   },
   {
-    title: 'Animal Planet',
+    title: 'Wild Brawl Tactics',
     path: 'game/:saveId',
     component: GameComponent,
   },
   {
-    title: 'Animal Planet',
+    title: 'Wild Brawl Tactics',
     path: 'game',
     redirectTo: 'home',
     pathMatch: 'full',
   },
   {
-    title: 'Animal Planet',
+    title: 'Wild Brawl Tactics',
     path: '',
     redirectTo: 'home',
     pathMatch: 'full',
