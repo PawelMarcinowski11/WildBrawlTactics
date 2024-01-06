@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject, filter } from 'rxjs';
 import { Hedgehog } from '../characters';
 import { RewardType } from '../enums';
-import { IReward } from '../interfaces';
+import { ICharacter, IReward } from '../interfaces';
 import { GameStateService } from './game-state.service';
 import { PlayerCharactersService } from './player-characters.service';
 import { SavesService } from './saves.service';
@@ -14,12 +14,18 @@ export class RewardsService {
   private _currentLevel: number = 1;
   private _rewardList: IReward[] = [
     {
+      type: RewardType.ABILITY_UPGRADE,
+      level: 1,
+      claimed: false,
+      id: '1a',
+    },
+    {
       type: RewardType.NEW_CHARACTER,
       level: 2,
       claimed: false,
       character: Hedgehog,
       characterCoords: [3, 5],
-      id: crypto.randomUUID(),
+      id: '2a',
     },
   ];
 
@@ -52,10 +58,30 @@ export class RewardsService {
 
     if (claimedReward) {
       claimedReward.claimed = true;
-      this._playerCharactersService.addPlayerCharacters(
+      this._playerCharactersService.addPlayerCharacter(
         claimedReward.character!,
         claimedReward.characterCoords!,
       );
+
+      this._gameStateService.restartLevel();
+    }
+
+    this.emitRewards();
+    this.saveRewards();
+  }
+
+  public upgradeCharacterFromReward(
+    reward: IReward,
+    character: ICharacter,
+  ): void {
+    const claimedReward = this._rewardList.find(
+      (element) => element.id === reward.id,
+    );
+
+    if (claimedReward) {
+      claimedReward.claimed = true;
+
+      this._playerCharactersService.upgradePlayerCharacter(character, 1);
 
       this._gameStateService.restartLevel();
     }
@@ -68,7 +94,11 @@ export class RewardsService {
     const savedRewards = this._savesService.retrievePlayerRewards();
 
     if (savedRewards.length) {
-      this._rewardList = savedRewards;
+      this._rewardList.forEach((reward) => {
+        reward.claimed =
+          savedRewards.find((savedReward) => savedReward.id === reward.id)
+            ?.claimed ?? false;
+      });
     }
   }
 

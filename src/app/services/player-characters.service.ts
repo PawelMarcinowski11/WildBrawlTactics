@@ -1,9 +1,9 @@
 import { Injectable, Type } from '@angular/core';
 import { Bee, Ram } from '../characters';
 import { PlayerType } from '../enums';
+import { Team } from '../enums/team';
 import { ICharacter } from '../interfaces';
 import { SavesService } from './saves.service';
-import { Team } from '../enums/team';
 
 @Injectable({
   providedIn: 'root',
@@ -18,7 +18,7 @@ export class PlayerCharactersService {
 
   constructor(private readonly _savesService: SavesService) {}
 
-  public addPlayerCharacters(
+  public addPlayerCharacter(
     Character: Type<ICharacter>,
     coords: [x: number, y: number],
   ): void {
@@ -27,6 +27,26 @@ export class PlayerCharactersService {
     );
 
     this._savesService.savePlayerCharacters(this._playerCharacters);
+  }
+
+  public upgradePlayerCharacter(
+    upgradedCharacter: ICharacter,
+    times = 1,
+  ): void {
+    const character = this._playerCharacters.find(
+      (character) => character.id === upgradedCharacter.id,
+    );
+
+    if (character) {
+      character.timesUpgraded += times;
+      character.maxHp += character.hpGrowth * times;
+
+      character.actions.forEach(
+        (action) => (action.amount += action.amountGrowth * times),
+      );
+
+      this._savesService.savePlayerCharacters(this._playerCharacters);
+    }
   }
 
   public getPlayerCharacters(): ICharacter[] {

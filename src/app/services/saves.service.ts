@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ICharacter, IReward } from '../interfaces';
+import { ICharacter, IRewardClaimState } from '../interfaces';
 
 @Injectable({
   providedIn: 'root',
@@ -46,7 +46,7 @@ export class SavesService {
     }
   }
 
-  public retrievePlayerRewards(): IReward[] {
+  public retrievePlayerRewards(): IRewardClaimState[] {
     if (this._saveId) {
       const rewards = localStorage.getItem(`game_${this._saveId}_rewards`);
       return rewards ? JSON.parse(rewards) : [];
@@ -73,11 +73,19 @@ export class SavesService {
     }
   }
 
-  public savePlayerRewards(rewards: IReward[]): void {
+  public savePlayerRewards(rewards: IRewardClaimState[]): void {
     if (this._saveId) {
       localStorage.setItem(
         `game_${this._saveId}_rewards`,
-        JSON.stringify(rewards),
+        JSON.stringify(
+          rewards.map((reward) => {
+            return {
+              level: reward.level,
+              claimed: reward.claimed,
+              id: reward.id,
+            };
+          }),
+        ),
       );
     }
   }

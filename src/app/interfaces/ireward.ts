@@ -1,12 +1,9 @@
 import { Type } from '@angular/core';
-import { ICharacter } from '.';
+import { ICharacter, IRewardClaimState } from '.';
 import { RewardType } from '../enums';
 
-export interface IReward {
+export interface IReward extends IRewardClaimState {
   character?: Type<ICharacter>;
   characterCoords?: [x: number, y: number];
-  claimed: boolean;
-  id: string;
-  level: number;
   type: RewardType;
 }

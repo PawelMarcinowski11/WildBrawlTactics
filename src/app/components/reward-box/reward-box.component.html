@@ -7,8 +7,9 @@
     class="flex flex-col items-center justify-center p-2 font-bold border-2 border-gray-900 rounded-md bg-amber-300"
   >
     {{ "New character joins your team!" | uppercase }}
-    <div class="w-40 h-40 m-1">
+    <div>
       <img
+        class="w-40 h-40 m-1"
         [ngStyle]="{
           filter:
             'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
@@ -27,5 +28,63 @@
     >
       {{ "Welcome" | uppercase }}
     </button>
+  </div>
+  <div
+    *ngIf="reward.type === RewardType.ABILITY_UPGRADE"
+    class="flex flex-col items-center p-2 font-bold border-2 border-gray-900 rounded-md bg-amber-300 gap-2 overflow-auto max-h-[60vh]"
+  >
+    <p
+      class="sticky top-0 border-2 border-gray-900 rounded-md w-full bg-fuchsia-100 p-2 z-10"
+    >
+      {{ "Upgrade one of your characters" | uppercase }}
+    </p>
+    <div
+      class="grid grid-flow-row grid-cols-[repeat(3,auto)] border-2 w-full border-gray-900 rounded-md bg-orange-300 p-1 gap-1"
+      *ngFor="let character of playerCharacters"
+    >
+      <img
+        class="w-20 h-20 m-1"
+        [ngStyle]="{
+          filter:
+            'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
+            'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
+            'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
+            'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
+        }"
+        [src]="'assets/svg/' + character.appearance + '.svg'"
+      />
+      <div>
+        <p>
+          Level: {{ character.timesUpgraded + 1 }} =>
+          {{ character.timesUpgraded + 2 }}
+        </p>
+        <p>
+          HP: {{ character.maxHp }} =>
+          {{ character.maxHp + character.hpGrowth }}
+        </p>
+        <p *ngFor="let action of character.actions">
+          {{ action.name }}: {{ action.amount }} =>
+          {{ action.amount + action.amountGrowth }}
+        </p>
+      </div>
+      <div class="flex items-center pl-1">
+        <button
+          class="p-1 h-4/5 border-2 border-gray-900 rounded-md bg-amber-100 text-ellipsis w-24 {{
+            character.timesUpgraded < lowestCharacterLevel + 2
+              ? 'hoverable:hover:bg-amber-50'
+              : 'text-gray-400'
+          }} "
+          [disabled]="character.timesUpgraded >= lowestCharacterLevel + 2"
+          (click)="takeUpgradeReward(reward, character)"
+        >
+          {{
+            (character.timesUpgraded < lowestCharacterLevel + 2
+              ? "Upgrade"
+              : "Level too high"
+            ) | uppercase
+          }}
+        </button>
+      </div>
+    </div>
   </div>
 </div>
