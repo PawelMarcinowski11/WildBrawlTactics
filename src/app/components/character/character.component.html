@@ -6,19 +6,17 @@
   <div class="w-full h-full animate-bounce">
     <div class="absolute inline-block w-full h-full align-middle">
       <img
-        [ngStyle]="{
-          filter:
-            (parameters.moved ? 'sepia(1)' : '') +
-            'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
-            'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
-            'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
-            'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
-        }"
+        class="{{
+          parameters.moved
+            ? 'drop-shadow-outline--sepia'
+            : 'drop-shadow-outline'
+        }}"
         [src]="'assets/svg/' + parameters.appearance + '.svg'"
       />
     </div>
     <div #overlay class="absolute w-full h-full text-transparent">
       <img
+        class="drop-shadow-outline--red"
         [ngStyle]="{
           mask:
             (this.linearGradient ? 'linear' : 'conic') +
@@ -29,18 +27,7 @@
             (this.linearGradient ? 'linear' : 'conic') +
             '-gradient(white ' +
             (1 - this.parameters.hp / this.parameters.maxHp) * 100 +
-            '%, transparent 0%)',
-          filter:
-            'brightness(0%)' +
-            'invert(30%)' +
-            'sepia(60%)' +
-            'saturate(5000%)' +
-            'hue-rotate(345deg)' +
-            'brightness(80%)' +
-            'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
-            'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
-            'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
-            'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
+            '%, transparent 0%)'
         }"
         [src]="'assets/svg/' + parameters.appearance + '.svg'"
       />
@@ -53,13 +40,7 @@
   >
     <div class="w-1/2 h-1/2 m-auto">
       <img
-        [ngStyle]="{
-          filter:
-            'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
-            'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
-            'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
-            'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
-        }"
+        class="drop-shadow-outline"
         [src]="'assets/svg/' + selectedAction.appearance + '.svg'"
       />
     </div>
@@ -70,16 +51,7 @@
     class="absolute w-full h-full top-[-45%]"
   >
     <div class="w-1/2 h-1/2 mx-auto">
-      <img
-        [ngStyle]="{
-          filter:
-            'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
-            'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
-            'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
-            'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
-        }"
-        [src]="'assets/svg/u1f53b.svg'"
-      />
+      <img class="drop-shadow-outline" [src]="'assets/svg/u1f53b.svg'" />
     </div>
   </div>
   <div
@@ -88,13 +60,7 @@
     <div class="flex w-full gap-1 mb-1">
       <div class="w-1/5" *ngFor="let status of parameters.statuses">
         <img
-          [ngStyle]="{
-            filter:
-              'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
-              'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
-              'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
-              'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
-          }"
+          class="drop-shadow-outline"
           [src]="'assets/svg/' + status.appearance + '.svg'"
         />
       </div>

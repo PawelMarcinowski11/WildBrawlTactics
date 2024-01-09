@@ -1,3 +1,8 @@
+.background-treeline {
+  -webkit-mask: "conic-gradient(from 150deg at top,#0000,#000 1deg 59deg,#0000 60deg) 50%/34.64px 100%";
+  mask: "conic-gradient(from 150deg at top,#0000,#000 1deg 59deg,#0000 60deg) 50%/34.64px 100%";
+}
+
 .sky-anim {
   animation: 180s linear change-sky-color infinite;
   animation-delay: -37.5s;
@@ -9,19 +14,22 @@
 }
 
 .sun-anim {
-  animation: 180s linear move-vertically infinite,
+  animation:
+    180s linear move-vertically infinite,
     180s linear move-horizontally infinite;
   animation-delay: -37.5s;
 }
 
 .fast-cloud-anim {
-  animation: 90s linear translate-horizontally infinite,
+  animation:
+    90s linear translate-horizontally infinite,
     180s linear change-cloud-color infinite;
   animation-delay: -37.5s;
 }
 
 .slow-cloud-anim {
-  animation: 105s linear translate-horizontally infinite,
+  animation:
+    105s linear translate-horizontally infinite,
     180s linear change-cloud-color infinite;
   animation-delay: -37.5s;
 }
