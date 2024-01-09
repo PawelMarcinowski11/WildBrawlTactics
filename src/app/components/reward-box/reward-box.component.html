@@ -9,14 +9,7 @@
     {{ "New character joins your team!" | uppercase }}
     <div>
       <img
-        class="w-40 h-40 m-1"
-        [ngStyle]="{
-          filter:
-            'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
-            'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
-            'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
-            'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
-        }"
+        class="w-40 h-40 m-1 drop-shadow-outline"
         [src]="
           'assets/svg/' + getCharacterAppearance(reward.character!) + '.svg'
         "
@@ -43,14 +36,7 @@
       *ngFor="let character of playerCharacters"
     >
       <img
-        class="w-20 h-20 m-1"
-        [ngStyle]="{
-          filter:
-            'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
-            'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
-            'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
-            'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
-        }"
+        class="w-20 h-20 m-1 drop-shadow-outline"
         [src]="'assets/svg/' + character.appearance + '.svg'"
       />
       <div>

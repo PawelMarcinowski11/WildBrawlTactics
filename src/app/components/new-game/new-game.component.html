@@ -1,8 +1,7 @@
 <div class="relative flex justify-center w-full h-screen">
   <div class="flex flex-col gap-1 justify-center h-screen">
     <h1
-      class="font-bold text-[calc(min(60px,9vw))] uppercase py-4 text-red-300"
-      style="-webkit-text-stroke: 2px #000; text-stroke: 2px #000"
+      class="font-bold text-[calc(min(60px,9vw))] uppercase py-4 text-red-300 title-outline"
     >
       Wild Brawl Tactics
     </h1>
@@ -18,29 +17,11 @@
         (click)="initalizeNewGame()"
       >
         <div class="inline-block w-12 mt-3 animate-bounce">
-          <img
-            [ngStyle]="{
-              filter:
-                'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
-                'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
-                'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
-                'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
-            }"
-            [src]="'assets/svg/u2694.svg'"
-          />
+          <img class="drop-shadow-outline" [src]="'assets/svg/u2694.svg'" />
         </div>
         <span>New game</span>
         <div class="inline-block w-12 mt-3 animate-bounce">
-          <img
-            [ngStyle]="{
-              filter:
-                'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
-                'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
-                'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
-                'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
-            }"
-            [src]="'assets/svg/u2694.svg'"
-          />
+          <img class="drop-shadow-outline" [src]="'assets/svg/u2694.svg'" />
         </div>
       </button>
     </div>

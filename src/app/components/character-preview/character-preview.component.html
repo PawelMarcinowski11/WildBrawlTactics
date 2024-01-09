@@ -40,14 +40,7 @@
     <div class="p-1 pt-0">
       <div class="p-1 bg-violet-400 border-2 border-gray-900 rounded-md">
         <img
-          class="h-[1rem] inline-block align-baseline"
-          [ngStyle]="{
-            filter:
-              'drop-shadow(-0.05em -0.05em rgb(17 24 39))' +
-              'drop-shadow(0.05em -0.05em rgb(17 24 39))' +
-              'drop-shadow(0.05em 0.05em rgb(17 24 39))' +
-              'drop-shadow(-0.05em 0.05em rgb(17 24 39))'
-          }"
+          class="h-[1rem] inline-block align-baseline drop-shadow-outline"
           [src]="'assets/svg/' + status.appearance + '.svg'"
         />
         {{ status.description }}
