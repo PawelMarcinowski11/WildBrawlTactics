@@ -1,5 +1,6 @@
 export enum ActionTarget {
   ENEMY = 'enemy',
   ALLY = 'ally',
-  SELF = 'self,',
+  SELF = 'self',
+  ALL_ENEMIES = 'all_enemies',
 }

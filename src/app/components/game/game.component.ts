@@ -1,7 +1,8 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { filter } from 'rxjs';
+import { Observable, filter } from 'rxjs';
+import { IAnimation } from 'src/app/interfaces/ianimation';
 import { ICharacter } from 'src/app/interfaces/icharacter';
 import { SavesService } from 'src/app/services/saves.service';
 import { GameStateService } from '../../services/game-state.service';
@@ -22,9 +23,10 @@ import { GameStateService } from '../../services/game-state.service';
   ],
 })
 export class GameComponent {
+  public activeAnimations$?: Observable<IAnimation[]>;
   public battleResult?: 'Victory' | 'Defeat';
   public levelNumber = 1;
-  public participatingCharacters: ICharacter[] = [];
+  public participatingCharacters$?: Observable<ICharacter[]>;
   public roundNumber = 1;
 
   constructor(
@@ -32,25 +34,24 @@ export class GameComponent {
     private readonly _savesService: SavesService,
     private readonly _gameStateService: GameStateService,
   ) {
-    this._gameStateService.participatingCharacters$.subscribe(
-      (participatingCharacters) => {
-        this.participatingCharacters = participatingCharacters;
-      },
-    );
+    this.participatingCharacters$ =
+      this._gameStateService.participatingCharacters;
 
-    this._gameStateService.gameEvents$
+    this.activeAnimations$ = this._gameStateService.activeAnimations;
+
+    this._gameStateService.gameEvents
       .pipe(filter((event) => event.type === 'roundStart'))
       .subscribe((event) => {
         this.roundNumber = event.data['roundNumber'];
       });
 
-    this._gameStateService.gameEvents$
+    this._gameStateService.gameEvents
       .pipe(filter((event) => event.type === 'battleStart'))
       .subscribe((event) => {
         this.levelNumber = event.data['levelNumber'];
       });
 
-    this._gameStateService.gameEvents$
+    this._gameStateService.gameEvents
       .pipe(filter((event) => event.type === 'battleFinished'))
       .subscribe((event) => {
         this.battleResult = event.data['outcome'];

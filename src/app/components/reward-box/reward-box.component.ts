@@ -16,7 +16,7 @@ export class RewardBoxComponent implements OnInit {
 
   public lowestCharacterLevel = 0;
   public playerCharacters: ICharacter[] = [];
-  public rewardsWaiting?: Observable<IReward[]>;
+  public rewardsWaiting$?: Observable<IReward[]>;
 
   constructor(
     private readonly _rewardsService: RewardsService,
@@ -32,7 +32,7 @@ export class RewardBoxComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.rewardsWaiting = this._rewardsService.claimableRewards$.pipe(
+    this.rewardsWaiting$ = this._rewardsService.claimableRewards$.pipe(
       tap((rewards) => {
         if (rewards?.[0]?.type === RewardType.ABILITY_UPGRADE) {
           this.updateCurrentCharacters();

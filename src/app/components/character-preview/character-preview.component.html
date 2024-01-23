@@ -12,18 +12,18 @@
   </div>
   <div
     *ngIf="selectedCharacter && !isPlayerCharacter()"
-    class="sticky top-0 font-bold"
+    class="font-bold text-sm"
     (click)="$event.stopPropagation()"
   >
     <div class="p-1 pt-0">
-      <div class="p-1 bg-red-400 border-2 border-gray-900 rounded-md">
+      <div class="p-1 bg-red-300 border-2 border-gray-900 rounded-md">
         This is an enemy character
       </div>
     </div>
   </div>
   <div
     *ngIf="selectedCharacter?.moved"
-    class="sticky top-0 font-bold"
+    class="font-bold text-sm"
     (click)="$event.stopPropagation()"
   >
     <div class="p-1 pt-0">
@@ -34,7 +34,7 @@
   </div>
   <div
     *ngFor="let status of selectedCharacter?.statuses"
-    class="font-bold"
+    class="font-bold text-sm"
     (click)="$event.stopPropagation()"
   >
     <div class="p-1 pt-0">
@@ -74,10 +74,36 @@
       <span class="font-bold text-center">
         {{ action.name | uppercase }}
       </span>
-      <span class="text-sm font-bold text-left">
+      <span class="text-xs font-bold text-left">
         {{ action.type | uppercase }}: {{ action.amount }}
       </span>
-      <span *ngIf="action.uses" class="text-sm font-bold text-left">
+      <ng-container [ngSwitch]="action.target">
+        <span
+          *ngSwitchCase="ActionTarget.ALLY"
+          class="text-xs font-bold text-left"
+        >
+          TARGET: ONE ALLY
+        </span>
+        <span
+          *ngSwitchCase="ActionTarget.ENEMY"
+          class="text-xs font-bold text-left"
+        >
+          TARGET: ONE ENEMY
+        </span>
+        <span
+          *ngSwitchCase="ActionTarget.ALL_ENEMIES"
+          class="text-xs font-bold text-left"
+        >
+          TARGET: ALL ENEMIES
+        </span>
+        <span
+          *ngSwitchCase="ActionTarget.SELF"
+          class="text-xs font-bold text-left"
+        >
+          TARGET: SELF
+        </span>
+      </ng-container>
+      <span *ngIf="action.uses" class="text-xs font-bold text-left">
         USES: {{ action.usesLeft }} / {{ action.uses }}
       </span>
     </div>

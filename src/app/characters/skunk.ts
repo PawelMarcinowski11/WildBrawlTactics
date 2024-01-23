@@ -2,39 +2,28 @@ import { ActionTarget, ActionType, PlayerType } from '../enums';
 import { Team } from '../enums/team';
 import { ICharacter } from '../interfaces';
 
-export class Ram implements ICharacter {
+export class Skunk implements ICharacter {
   constructor(
     public x: number,
     public y: number,
     public timesUpgraded = 0,
-    public player = PlayerType.HUMAN,
-    public team = Team.PLAYER,
+    public player = PlayerType.AI,
+    public team = Team.OPPONENT,
     public moved = false,
-    public hp = 10,
-    public maxHp = 10,
-    public hpGrowth = 5,
-    public appearance = 'u1f40f',
+    public hp = 12,
+    public maxHp = 12,
+    public hpGrowth = 3,
+    public appearance = 'u1f9a8',
     public statuses = [],
     public actions = [
       {
-        name: 'Kick',
+        name: 'Spread aroma',
         type: ActionType.DAMAGE,
-        amount: 4,
+        amount: 2,
         amountGrowth: 2,
-        appearance: 'u2694',
+        appearance: 'u1f4a8_mod_a',
         timesUpgraded: 0,
-        target: ActionTarget.ENEMY,
-      },
-      {
-        name: 'Ram',
-        type: ActionType.DAMAGE,
-        amount: 10,
-        amountGrowth: 5,
-        appearance: 'u2694',
-        timesUpgraded: 0,
-        uses: 1,
-        usesLeft: 1,
-        target: ActionTarget.ENEMY,
+        target: ActionTarget.ALL_ENEMIES,
       },
     ],
     public id = crypto.randomUUID(),

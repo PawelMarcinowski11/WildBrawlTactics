@@ -13,7 +13,7 @@ export class Hedgehog implements ICharacter {
     public moved = false,
     public hp = 10,
     public maxHp = 10,
-    public hpGrowth = 5,
+    public hpGrowth = 8,
     public appearance = 'u1f994',
     public statuses = [new Spiky()],
     public actions = [

@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ICharacter, ICharacterAction } from 'src/app/interfaces';
+import { ActionTarget } from '../../enums/action-target';
 import { GameStateService } from '../../services/game-state.service';
 
 @Component({
@@ -9,12 +10,13 @@ import { GameStateService } from '../../services/game-state.service';
 export class CharacterPreviewComponent {
   public selectedAction!: ICharacterAction | null;
   public selectedCharacter!: ICharacter | null;
+  public readonly ActionTarget = ActionTarget;
 
   constructor(private _gameStateService: GameStateService) {
-    this._gameStateService.selectedCharacter$.subscribe(
+    this._gameStateService.selectedCharacter.subscribe(
       (newCharacter) => (this.selectedCharacter = newCharacter),
     );
-    this._gameStateService.selectedAction$.subscribe(
+    this._gameStateService.selectedAction.subscribe(
       (newAction) => (this.selectedAction = newAction),
     );
   }

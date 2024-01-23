@@ -1,5 +1,5 @@
 <div
-  *ngIf="(rewardsWaiting | async)?.[0] as reward"
+  *ngIf="(rewardsWaiting$ | async)?.[0] as reward"
   class="fixed top-0 flex items-center justify-center w-screen h-screen"
 >
   <div
@@ -32,8 +32,8 @@
       {{ "Upgrade one of your characters" | uppercase }}
     </p>
     <div
-      class="grid grid-flow-row grid-cols-[repeat(3,auto)] border-2 w-full border-gray-900 rounded-md bg-orange-300 p-1 gap-1"
       *ngFor="let character of playerCharacters"
+      class="grid grid-flow-row grid-cols-[1fr,1.8fr,1fr] border-2 w-full border-gray-900 rounded-md bg-orange-300 p-1 gap-1"
     >
       <img
         class="w-20 h-20 m-1 drop-shadow-outline"
@@ -44,13 +44,15 @@
           Level: {{ character.timesUpgraded + 1 }} =>
           {{ character.timesUpgraded + 2 }}
         </p>
-        <p>
+        <p class="text-xs">
           HP: {{ character.maxHp }} =>
           {{ character.maxHp + character.hpGrowth }}
         </p>
-        <p *ngFor="let action of character.actions">
-          {{ action.name }}: {{ action.amount }} =>
-          {{ action.amount + action.amountGrowth }}
+        <p *ngFor="let action of character.actions" class="text-xs">
+          <ng-container *ngIf="action.amountGrowth > 0">
+            {{ action.name }}: {{ action.amount }} =>
+            {{ action.amount + action.amountGrowth }}
+          </ng-container>
         </p>
       </div>
       <div class="flex items-center pl-1">

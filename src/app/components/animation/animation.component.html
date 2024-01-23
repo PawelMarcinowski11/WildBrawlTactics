@@ -1,0 +1,27 @@
+<div [ngSwitch]="parameters.animationType">
+  <div
+    *ngSwitchCase="AnimationType.EXPLOSION"
+    class="animate-explosion w-full h-full p-2 xs:p-4 top-0"
+  >
+    <img
+      class="drop-shadow-outline"
+      [src]="'assets/svg/' + parameters.appearance + '.svg'"
+    />
+  </div>
+  <div
+    *ngSwitchCase="AnimationType.DAMAGE_NUMBER"
+    class="animate-floating-numbers w-full h-full p-2 xs:p-4 top-0 text-center drop-shadow-outline"
+  >
+    <span class="text-4xl xs:text-6xl text-red-300">
+      {{ parameters.appearance }}
+    </span>
+  </div>
+  <div
+    *ngSwitchCase="AnimationType.HEAL_NUMBER"
+    class="animate-floating-numbers w-full h-full p-2 xs:p-4 top-0 text-center drop-shadow-outline"
+  >
+    <span class="text-4xl xs:text-6xl text-green-300">
+      {{ parameters.appearance }}
+    </span>
+  </div>
+</div>

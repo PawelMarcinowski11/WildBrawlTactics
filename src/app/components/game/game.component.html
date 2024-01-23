@@ -23,12 +23,19 @@
   >
     <ani-character
       @EnterAndLeave
-      *ngFor="let character of participatingCharacters"
+      *ngFor="let character of participatingCharacters$ | async"
       [parameters]="character"
       [style.left]="(+character.x - 1) * 20 + '%'"
       [style.top]="(+character.y - 1) * 20 + '%'"
       class="absolute block w-1/5 transition-all h-1/5"
     ></ani-character>
+    <ani-mation
+      *ngFor="let animation of activeAnimations$ | async"
+      [parameters]="animation"
+      [style.left]="(+animation.x - 1) * 20 + '%'"
+      [style.top]="(+animation.y - 1) * 20 + '%'"
+      class="absolute block w-1/5 transition-all h-1/5 pointer-events-none"
+    ></ani-mation>
   </div>
   <div
     class="w-full max-md:max-w-[65dvh] md:w-[150px] md:h-[calc(min(100dvh-48px,100vw-150px))] relative max-md:flex-grow-[4]"

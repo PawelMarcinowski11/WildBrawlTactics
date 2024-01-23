@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, filter } from 'rxjs';
-import { Hedgehog } from '../characters';
+import { Hedgehog, Skunk } from '../characters';
 import { RewardType } from '../enums';
 import { ICharacter, IReward } from '../interfaces';
 import { GameStateService } from './game-state.service';
@@ -14,18 +14,26 @@ export class RewardsService {
   private _currentLevel: number = 1;
   private _rewardList: IReward[] = [
     {
-      type: RewardType.ABILITY_UPGRADE,
-      level: 1,
-      claimed: false,
-      id: '1a',
-    },
-    {
       type: RewardType.NEW_CHARACTER,
       level: 2,
       claimed: false,
       character: Hedgehog,
       characterCoords: [3, 5],
       id: '2a',
+    },
+    {
+      type: RewardType.ABILITY_UPGRADE,
+      level: 3,
+      claimed: false,
+      id: '3a',
+    },
+    {
+      type: RewardType.NEW_CHARACTER,
+      level: 4,
+      claimed: false,
+      character: Skunk,
+      characterCoords: [1, 5],
+      id: '4a',
     },
   ];
 
@@ -36,7 +44,7 @@ export class RewardsService {
     private readonly _savesService: SavesService,
     private readonly _playerCharactersService: PlayerCharactersService,
   ) {
-    this._gameStateService.gameEvents$
+    this._gameStateService.gameEvents
       .pipe(filter((event) => event.type === 'battleStart'))
       .subscribe((event) => {
         this._currentLevel = event.data['levelNumber'];
@@ -44,7 +52,7 @@ export class RewardsService {
         this.emitRewards();
       });
 
-    this._gameStateService.gameEvents$
+    this._gameStateService.gameEvents
       .pipe(filter((event) => event.type === 'gameStart'))
       .subscribe((event) => {
         this.loadRewards();
@@ -70,6 +78,22 @@ export class RewardsService {
     this.saveRewards();
   }
 
+  public loadRewards(): void {
+    const savedRewards = this._savesService.retrievePlayerRewards();
+
+    if (savedRewards.length) {
+      this._rewardList.forEach((reward) => {
+        reward.claimed =
+          savedRewards.find((savedReward) => savedReward.id === reward.id)
+            ?.claimed ?? false;
+      });
+    }
+  }
+
+  public saveRewards(): void {
+    this._savesService.savePlayerRewards(this._rewardList);
+  }
+
   public upgradeCharacterFromReward(
     reward: IReward,
     character: ICharacter,
@@ -88,22 +112,6 @@ export class RewardsService {
 
     this.emitRewards();
     this.saveRewards();
-  }
-
-  public loadRewards(): void {
-    const savedRewards = this._savesService.retrievePlayerRewards();
-
-    if (savedRewards.length) {
-      this._rewardList.forEach((reward) => {
-        reward.claimed =
-          savedRewards.find((savedReward) => savedReward.id === reward.id)
-            ?.claimed ?? false;
-      });
-    }
-  }
-
-  public saveRewards(): void {
-    this._savesService.savePlayerRewards(this._rewardList);
   }
 
   public upgradeExistingCharacter(): void {}

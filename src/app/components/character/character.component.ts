@@ -38,13 +38,13 @@ export class CharacterComponent {
     private _cdr: ChangeDetectorRef,
     private _gameStateService: GameStateService,
   ) {
-    this._gameStateService.selectedAction$.subscribe(
+    this._gameStateService.selectedAction.subscribe(
       (newSelected) => (this.selectedAction = newSelected),
     );
-    this._gameStateService.selectedCharacter$.subscribe(
+    this._gameStateService.selectedCharacter.subscribe(
       (newSelected) => (this.selectedCharacter = newSelected),
     );
-    this._gameStateService.selectableCharacters$.subscribe(
+    this._gameStateService.selectableCharacters.subscribe(
       (availableTargets) => (this.availableTargets = availableTargets),
     );
   }
