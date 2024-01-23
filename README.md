@@ -13,4 +13,4 @@ The gameplay is rooted in a turn-based system, requiring you to carefully
 plan and execute your actions. Each animal in your pack boasts unique
 abilities, ranging from powerful attacks to invaluable support skills.
 
-## Wild Brawl Tactics is a hobby project attempting to create a simple yet fun singleplayer browser game, while practicing RWD, animations, Angular data flow and more. If you find any bugs or wanted to ask a question, feel free to add an issue or contact me by email at pawel.marcinowski11@gmail.com :)
+#### Wild Brawl Tactics is a hobby project attempting to create a simple yet fun singleplayer browser game, while practicing RWD, animations, Angular data flow and more. If you find any bugs or wanted to ask a question, feel free to add an issue or contact me by email at pawel.marcinowski11@gmail.com :)
