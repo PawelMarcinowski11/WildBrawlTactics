@@ -1,5 +1,7 @@
 # WildBrawlTactics
 
+### Check out the game live on https://wild-brawl-tactics.netlify.app :)
+
 Welcome to the captivating world of "Wild Brawl Tactics", where the
 untamed realms echo with the sounds of nature's fiercest clashes! In this
 thrilling turn-based strategy game, you find yourself at the helm of a
