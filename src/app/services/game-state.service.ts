@@ -107,12 +107,13 @@ export class GameStateService {
           );
           break;
         case ActionTarget.ALL_ENEMIES:
-          this.selectableCharacters.next(
-            this._currentLevel.characters.filter(
-              (character) =>
-                character.team !== this.currentlySelectedCharacter!.team,
-            ),
+          this.resolveAction(
+            this.currentlySelectedCharacter,
+            this.getAvailableEnemies(this.currentlySelectedCharacter)[0],
+            this.currentlySelectedAction,
           );
+          this.currentlySelectedAction = null;
+          this.currentlySelectedCharacter = null;
           break;
         case ActionTarget.ALLY:
           this.selectableCharacters.next(
@@ -123,7 +124,13 @@ export class GameStateService {
           );
           break;
         case ActionTarget.SELF:
-          this.selectableCharacters.next([this.currentlySelectedCharacter]);
+          this.resolveAction(
+            this.currentlySelectedCharacter,
+            this.currentlySelectedCharacter,
+            this.currentlySelectedAction,
+          );
+          this.currentlySelectedAction = null;
+          this.currentlySelectedCharacter = null;
           break;
       }
     }
