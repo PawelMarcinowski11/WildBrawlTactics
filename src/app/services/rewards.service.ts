@@ -11,6 +11,8 @@ import { SavesService } from './saves.service';
   providedIn: 'root',
 })
 export class RewardsService {
+  private readonly _numberOfLevels = 4;
+
   private _currentLevel: number = 1;
   private _rewardList: IReward[] = [
     {
@@ -88,6 +90,17 @@ export class RewardsService {
             ?.claimed ?? false;
       });
     }
+
+    this._rewardList.push(
+      ...savedRewards
+        .filter((reward) => reward.level > this._numberOfLevels)
+        .map((reward) => ({
+          type: RewardType.ABILITY_UPGRADE,
+          level: reward.level,
+          claimed: reward.claimed,
+          id: reward.level + 'repeatable',
+        })),
+    );
   }
 
   public saveRewards(): void {
@@ -121,7 +134,7 @@ export class RewardsService {
       type: RewardType.ABILITY_UPGRADE,
       level: level,
       claimed: false,
-      id: crypto.randomUUID(),
+      id: level + 'repeatable',
     };
 
     this._rewardList.push(repeatingReward);
@@ -130,11 +143,11 @@ export class RewardsService {
   }
 
   private checkClaimableReward(level: number): IReward[] {
-    const rewards = this._rewardList.filter((reward) => reward.level <= level);
+    const rewards = this._rewardList.filter((reward) => reward.level === level);
 
     if (rewards.length) {
       return rewards.filter((reward) => !reward.claimed);
-    } else if (level > 20) {
+    } else if (level > this._numberOfLevels) {
       return [this.addRepeatingReward(level)];
     } else {
       return [];

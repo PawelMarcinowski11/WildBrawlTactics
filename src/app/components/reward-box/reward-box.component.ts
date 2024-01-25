@@ -63,7 +63,7 @@ export class RewardBoxComponent implements OnInit {
           ? lowest
           : character.timesUpgraded;
       },
-      0,
+      Infinity,
     );
   }
 }
