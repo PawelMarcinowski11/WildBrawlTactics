@@ -254,7 +254,7 @@ export class GameStateService {
     for (let character of this._currentLevel.characters.filter(
       (character) => character.player === 'ai' && !character.moved,
     )) {
-      await sleep(500);
+      await sleep(350);
       const target = this.chooseTarget(character);
 
       if (target) {

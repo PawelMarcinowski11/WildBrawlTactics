@@ -1,7 +1,7 @@
 import { animate, style, transition, trigger } from '@angular/animations';
 import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { Observable, filter } from 'rxjs';
+import { Observable, filter, scan } from 'rxjs';
 import { IAnimation } from 'src/app/interfaces/ianimation';
 import { ICharacter } from 'src/app/interfaces/icharacter';
 import { SavesService } from 'src/app/services/saves.service';
@@ -37,7 +37,9 @@ export class GameComponent {
     this.participatingCharacters$ =
       this._gameStateService.participatingCharacters;
 
-    this.activeAnimations$ = this._gameStateService.activeAnimations;
+    this.activeAnimations$ = this._gameStateService.activeAnimations.pipe(
+      scan((acc, next) => [...acc.slice(-40), ...next]),
+    );
 
     this._gameStateService.gameEvents
       .pipe(filter((event) => event.type === 'roundStart'))
