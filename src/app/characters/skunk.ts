@@ -12,7 +12,7 @@ export class Skunk implements ICharacter {
     public moved = false,
     public hp = 12,
     public maxHp = 12,
-    public hpGrowth = 3,
+    public hpGrowth = 1,
     public appearance = 'u1f9a8',
     public statuses = [],
     public actions = [
@@ -20,7 +20,7 @@ export class Skunk implements ICharacter {
         name: 'Spread aroma',
         type: ActionType.DAMAGE,
         amount: 2,
-        amountGrowth: 2,
+        amountGrowth: 1,
         appearance: 'u1f4a8_mod_a',
         timesUpgraded: 0,
         target: ActionTarget.ALL_ENEMIES,
