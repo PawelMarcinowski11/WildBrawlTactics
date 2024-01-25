@@ -27,7 +27,7 @@ export class Hedgehog implements ICharacter {
         target: ActionTarget.ENEMY,
       },
       {
-        name: 'Defensive stance',
+        name: 'Taunting stance',
         type: ActionType.DEFEND,
         amount: 1,
         amountGrowth: 0,
